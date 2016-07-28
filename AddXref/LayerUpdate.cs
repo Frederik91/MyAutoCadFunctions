@@ -44,10 +44,10 @@ namespace XrefManager
 
             drawingList = getDrawingList();
 
-            ChangeLayersOnDrawing(propertyList, drawingList);
+            ChangeLayersOnDrawings(propertyList, drawingList);
         }
 
-        public void ChangeLayersOnDrawing(List<LayerProperties> propList, List<string> drawingList)
+        public void ChangeLayersOnDrawings(List<LayerProperties> propList, List<string> drawingList)
         {
             Document Doc = Application.DocumentManager.MdiActiveDocument;
             var totalDrawings = drawingList.Count;
@@ -205,6 +205,7 @@ namespace XrefManager
                     }
 
                     trx.Commit();
+                    trx.Dispose();
                 }
 
                 xrefDb.CloseInput(true);

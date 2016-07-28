@@ -17,8 +17,16 @@ namespace XrefManager
 {
     public class MainClass
     {
+        MyRibbonTab.Commands rb = new MyRibbonTab.Commands();
+
         public MainClass()
         {
+        }
+
+        [CommandMethod("Ribb", CommandFlags.Session)]
+        public void Ribb()
+        {
+            rb.RibbonSplitButton();
         }
 
         [CommandMethod("AddXref", CommandFlags.Session)]
@@ -60,7 +68,7 @@ namespace XrefManager
             var drawingList = AX.addXrefSpecialized();
             if (drawingList != null)
             {
-                LU.ChangeLayersOnDrawing(propertyList, drawingList);
+                LU.ChangeLayersOnDrawings(propertyList, drawingList);
             }
         }
 
@@ -161,6 +169,13 @@ namespace XrefManager
         {
             var MTXL = new moveToXreflayer();
             MTXL.moveXref();
+        }
+
+        [CommandMethod("ChangeBlockColorByLayer", CommandFlags.Session)]
+        public void ChangeBlockColorByLayer()
+        {
+            var changeBlockColorByLayer = new ChangeBlockColorByLayer();
+            changeBlockColorByLayer.ChangeColorsBlocksAllDrawings();
         }
     }
 }

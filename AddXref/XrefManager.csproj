@@ -47,7 +47,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="AdWindows">
-      <HintPath>C:\ObjectARX 2015\inc\AdWindows.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2016\AdWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Autodesk.AutoCAD.Interop">
@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddXref.cs" />
+    <Compile Include="ChangeBlockColorByLayer.cs" />
     <Compile Include="DrawingManager.cs" />
     <Compile Include="LayerProperties.cs" />
     <Compile Include="LayerUpdate.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="PurgeDrawings.cs" />
     <Compile Include="ReplaceValue.cs" />
     <Compile Include="RevisionLine.cs" />
+    <Compile Include="MyRibbonTab.cs" />
     <Compile Include="UnloadXref.cs" />
   </ItemGroup>
   <ItemGroup>
