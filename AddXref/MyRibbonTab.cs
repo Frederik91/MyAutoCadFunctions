@@ -40,6 +40,8 @@ namespace MyRibbonTab
 
             ribbonControl.Tabs.Add(Tab);
 
+            #region Panels
+
             /////////////////////////////////////
             // create Ribbon panel
             Autodesk.Windows.RibbonPanelSource xRefPanel = new RibbonPanelSource();
@@ -49,15 +51,24 @@ namespace MyRibbonTab
             xRefPane.Source = xRefPanel;
             Tab.Panels.Add(xRefPane);
 
-            Autodesk.Windows.RibbonPanelSource DrawingManagementPanel = new RibbonPanelSource();
-            DrawingManagementPanel.Title = "Drawing Management";
+            Autodesk.Windows.RibbonPanelSource LayerUpdatePanel = new RibbonPanelSource();
+            LayerUpdatePanel.Title = "Layer Update";
 
-            RibbonPanel DrawingManagementPane = new RibbonPanel();
-            DrawingManagementPane.Source = DrawingManagementPanel;
-            Tab.Panels.Add(DrawingManagementPane);
+            RibbonPanel LayerUpdatePane = new RibbonPanel();
+            LayerUpdatePane.Source = LayerUpdatePanel;
+            Tab.Panels.Add(LayerUpdatePane);
+
+            Autodesk.Windows.RibbonPanelSource DrawingMaintenancePanel = new RibbonPanelSource();
+            DrawingMaintenancePanel.Title = "Drawing maintenance";
+
+            RibbonPanel DrawingMaintenancePane = new RibbonPanel();
+            DrawingMaintenancePane.Source = DrawingMaintenancePanel;
+            Tab.Panels.Add(DrawingMaintenancePane);
 
             //////////////////////////////////////////////////
             // create the buttons listed in the split button
+
+            #endregion 
 
             #region xRef Buttons
 
@@ -106,20 +117,21 @@ namespace MyRibbonTab
             XrefSplitButton.ShowText = true;
 
             RibbonSplitButton LayerUpdateSplitButton = new RibbonSplitButton();
-            // Required to avoid upsetting AutoCAD when using cmd locator
             LayerUpdateSplitButton.Text = "Layer Update";
             LayerUpdateSplitButton.ShowText = true;
+
+            RibbonButton ChangeAttributeValueButton = new RibbonButton();
+            ChangeAttributeValueButton.Text = "Change attribute value";
+            ChangeAttributeValueButton.ShowText = true;
 
             RibbonLabel LayerUpdateLabel = new RibbonLabel();
             LayerUpdateLabel.Text = "Update layers in:";
 
-            RibbonRowPanel itemsRow = new RibbonRowPanel();
-            itemsRow.Items.Add(LayerUpdateLabel);
-            itemsRow.Items.Add(new RibbonRowBreak());
-            itemsRow.Items.Add(LayerUpdateSplitButton);
-            itemsRow.Items.Add(PurgeButton);
+            RibbonRowPanel DrawingMaintenanceRowPanel = new RibbonRowPanel();
 
-            itemsRow.MinWidth = 50;
+            DrawingMaintenanceRowPanel.Items.Add(PurgeButton);
+            DrawingMaintenanceRowPanel.Items.Add(new RibbonRowBreak());
+            DrawingMaintenanceRowPanel.Items.Add(ChangeAttributeValueButton);
 
             XrefSplitButton.Items.Add(xrefButton1);
             XrefSplitButton.Items.Add(xrefButton2);
@@ -129,7 +141,9 @@ namespace MyRibbonTab
             LayerUpdateSplitButton.Items.Add(UpdateLayersThisDrawingButton);
 
             xRefPanel.Items.Add(XrefSplitButton);
-            DrawingManagementPanel.Items.Add(itemsRow);
+            LayerUpdatePanel.Items.Add(LayerUpdateLabel);
+            LayerUpdatePanel.Items.Add(LayerUpdateSplitButton);
+            DrawingMaintenancePanel.Items.Add(DrawingMaintenanceRowPanel);
 
             Tab.IsActive = true;
         }
@@ -174,6 +188,9 @@ namespace MyRibbonTab
                             break;
                         case ("Multiple drawings"):
                             MC.LayerUpdate();
+                            break;
+                        case ("Change attribute value"):
+                            MC.ChangeAttribute();
                             break;
                         default:
                             break;

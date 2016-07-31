@@ -63,6 +63,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -76,6 +77,18 @@
     <Compile Include="AddXref.cs" />
     <Compile Include="ChangeBlockColorByLayer.cs" />
     <Compile Include="DrawingManager.cs" />
+    <Compile Include="Forms\AddXrefForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddXrefForm.Designer.cs">
+      <DependentUpon>AddXrefForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UnloadXrefsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UnloadXrefsForm.Designer.cs">
+      <DependentUpon>UnloadXrefsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="LayerProperties.cs" />
     <Compile Include="LayerUpdate.cs" />
     <Compile Include="MagiTest.cs" />
@@ -102,6 +115,17 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\AddXrefForm.resx">
+      <DependentUpon>AddXrefForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UnloadXrefsForm.resx">
+      <DependentUpon>UnloadXrefsForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Test\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

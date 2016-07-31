@@ -9,50 +9,47 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XrefManager.Forms;
 
 namespace XrefManager
 {
     class AddXref
     {
+        private string xRefFile;
+        private List<string> drawingList = new List<string>();
+
         public void addXref()
         {
-            var UX = new UnloadXref();
-
-            var xRefFile = UX.getFileToXref();
-            if (string.IsNullOrEmpty(xRefFile))
+            using (var _form = new AddXrefForm())
             {
-                return;
-            }
-
-            var DrawingList = UX.getDrawingList();
-            if (DrawingList.Count == 0 || DrawingList == null)
-            {
-                return;
+                var result = _form.ShowDialog();
+                              
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {                   
+                    xRefFile = _form.xrefFile;
+                    drawingList = _form.drawingList;
+                }
+                if (result == System.Windows.Forms.DialogResult.None)
+                {
+                    return;
+                }
             }
 
             Document Doc = Application.DocumentManager.MdiActiveDocument;
 
-
-            foreach (var drawing in DrawingList)
+            foreach (var drawing in drawingList)
             {
-
-
                 Database xrefDb = new Database(false, true);
                 xrefDb.ReadDwgFile(drawing, FileShare.ReadWrite, false, "");
 
                 using (Transaction trx = xrefDb.TransactionManager.StartTransaction())
-                {
-
-                    //db.ResolveXrefs(true, false);         
-
+                {    
                     xrefDb = createLayer(trx, xrefDb);
 
                     BlockTable xrefBt = xrefDb.BlockTableId.GetObject(OpenMode.ForRead) as BlockTable;
                     BlockTableRecord btrMs = xrefBt[BlockTableRecord.ModelSpace].GetObject(OpenMode.ForWrite) as BlockTableRecord;
 
-
                     ObjectId xrefObjId = xrefDb.OverlayXref(xRefFile, Path.GetFileNameWithoutExtension(xRefFile));
-
 
                     BlockReference bref = new BlockReference(Point3d.Origin, xrefObjId);
 
@@ -66,7 +63,7 @@ namespace XrefManager
                 }
             }
 
-            Doc.Editor.WriteMessage("Filene er xrefet");
+            Doc.Editor.WriteMessage("Filene er xrefet\n");
         }
 
         public List<string> addXrefSpecialized()

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawingManagerApp", "DrawingManagerApp\DrawingManagerApp.csproj", "{B4623041-A7F3-4F77-B776-844BFB1CEA75}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XrefManager", "AddXref\XrefManager.csproj", "{B605AE21-A1E2-4FEC-9D03-96D373A30FF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProj", "TestProj\TestProj.csproj", "{E2EC02E1-F2FF-400A-A09B-D04B625764D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestXrefManager", "TestXrefManager\TestXrefManager.csproj", "{88ED791C-6B8F-42D6-AC7A-906BB9411011}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{E2EC02E1-F2FF-400A-A09B-D04B625764D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2EC02E1-F2FF-400A-A09B-D04B625764D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2EC02E1-F2FF-400A-A09B-D04B625764D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88ED791C-6B8F-42D6-AC7A-906BB9411011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88ED791C-6B8F-42D6-AC7A-906BB9411011}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88ED791C-6B8F-42D6-AC7A-906BB9411011}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88ED791C-6B8F-42D6-AC7A-906BB9411011}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
