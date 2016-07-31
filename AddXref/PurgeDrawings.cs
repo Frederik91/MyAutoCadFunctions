@@ -6,12 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XrefManager.Forms;
 
 namespace XrefManager
 {
     public class PurgeDrawings
     {
-        private List<string> getDrawingsToPurge()
+        public List<string> getDrawingsToPurge()
         {
             var fileDiag = new OpenFileDialog();
             fileDiag.Filter = "*.dwg | *.dwg";
@@ -27,7 +28,23 @@ namespace XrefManager
 
         public void purgeMultipleFiles()
         {
-            var drawingList = getDrawingsToPurge();
+            var drawingList = new List<string>();
+
+            using (var _form = new PurgeAttributeForm())
+            {
+                _form.SetTabIndex(0);
+
+                var result = _form.ShowDialog();
+
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    drawingList = _form.purgeDrawingList;
+                }
+                if (result == System.Windows.Forms.DialogResult.None)
+                {
+                    return;
+                }
+            }
 
             foreach (var drawing in drawingList)
             {

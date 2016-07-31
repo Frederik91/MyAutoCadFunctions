@@ -36,15 +36,21 @@
             this.AddXrefStart_button = new System.Windows.Forms.Button();
             this.AddXref_listBox = new System.Windows.Forms.ListBox();
             this.TabControl = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.UnloadXrefBrowse_button = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.UnloadXref_listBox = new System.Windows.Forms.ListBox();
+            this.Add_tab = new System.Windows.Forms.TabPage();
+            this.Unload_tab = new System.Windows.Forms.TabPage();
             this.UnloadXrefStart_button = new System.Windows.Forms.Button();
+            this.UnloadXref_listBox = new System.Windows.Forms.ListBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.UnloadXrefBrowse_button = new System.Windows.Forms.Button();
+            this.Detach_tab = new System.Windows.Forms.TabPage();
+            this.DetachXrefBrowse_button = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.DetachXref_listBox = new System.Windows.Forms.ListBox();
+            this.DetachXrefStart_button = new System.Windows.Forms.Button();
             this.TabControl.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.Add_tab.SuspendLayout();
+            this.Unload_tab.SuspendLayout();
+            this.Detach_tab.SuspendLayout();
             this.SuspendLayout();
             // 
             // AddxRefBrowse_button
@@ -55,7 +61,7 @@
             this.AddxRefBrowse_button.TabIndex = 0;
             this.AddxRefBrowse_button.Text = "Browse";
             this.AddxRefBrowse_button.UseVisualStyleBackColor = true;
-            this.AddxRefBrowse_button.Click += new System.EventHandler(this.xRef_Browse_button_Click);
+            this.AddxRefBrowse_button.Click += new System.EventHandler(this.AddxRefBrowse_button_Click);
             // 
             // label1
             // 
@@ -73,7 +79,6 @@
             this.AddXref_textBox.ReadOnly = true;
             this.AddXref_textBox.Size = new System.Drawing.Size(235, 20);
             this.AddXref_textBox.TabIndex = 2;
-            this.AddXref_textBox.TextChanged += new System.EventHandler(this.AddXref_textBox_TextChanged);
             // 
             // AddXrefBrowseDrawings_button
             // 
@@ -83,7 +88,7 @@
             this.AddXrefBrowseDrawings_button.TabIndex = 3;
             this.AddXrefBrowseDrawings_button.Text = "Browse";
             this.AddXrefBrowseDrawings_button.UseVisualStyleBackColor = true;
-            this.AddXrefBrowseDrawings_button.Click += new System.EventHandler(this.Browse_drawings_button_Click);
+            this.AddXrefBrowseDrawings_button.Click += new System.EventHandler(this.AddXrefBrowseDrawings_button_Click);
             // 
             // label2
             // 
@@ -102,7 +107,7 @@
             this.AddXrefStart_button.TabIndex = 7;
             this.AddXrefStart_button.Text = "Add xref to drawings";
             this.AddXrefStart_button.UseVisualStyleBackColor = true;
-            this.AddXrefStart_button.Click += new System.EventHandler(this.button2_Click);
+            this.AddXrefStart_button.Click += new System.EventHandler(this.AddXrefStart_button_Click);
             // 
             // AddXref_listBox
             // 
@@ -114,79 +119,132 @@
             // 
             // TabControl
             // 
-            this.TabControl.Controls.Add(this.tabPage1);
-            this.TabControl.Controls.Add(this.tabPage2);
+            this.TabControl.Controls.Add(this.Add_tab);
+            this.TabControl.Controls.Add(this.Unload_tab);
+            this.TabControl.Controls.Add(this.Detach_tab);
             this.TabControl.Location = new System.Drawing.Point(12, 12);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
             this.TabControl.Size = new System.Drawing.Size(365, 320);
             this.TabControl.TabIndex = 10;
             // 
-            // tabPage1
+            // Add_tab
             // 
-            this.tabPage1.Controls.Add(this.AddxRefBrowse_button);
-            this.tabPage1.Controls.Add(this.AddXref_listBox);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.AddXrefStart_button);
-            this.tabPage1.Controls.Add(this.AddXref_textBox);
-            this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.AddXrefBrowseDrawings_button);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(357, 294);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.Add_tab.Controls.Add(this.AddxRefBrowse_button);
+            this.Add_tab.Controls.Add(this.AddXref_listBox);
+            this.Add_tab.Controls.Add(this.label1);
+            this.Add_tab.Controls.Add(this.AddXrefStart_button);
+            this.Add_tab.Controls.Add(this.AddXref_textBox);
+            this.Add_tab.Controls.Add(this.label2);
+            this.Add_tab.Controls.Add(this.AddXrefBrowseDrawings_button);
+            this.Add_tab.Location = new System.Drawing.Point(4, 22);
+            this.Add_tab.Name = "Add_tab";
+            this.Add_tab.Padding = new System.Windows.Forms.Padding(3);
+            this.Add_tab.Size = new System.Drawing.Size(357, 294);
+            this.Add_tab.TabIndex = 0;
+            this.Add_tab.Text = "Add";
+            this.Add_tab.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // Unload_tab
             // 
-            this.tabPage2.Controls.Add(this.UnloadXrefStart_button);
-            this.tabPage2.Controls.Add(this.UnloadXref_listBox);
-            this.tabPage2.Controls.Add(this.label3);
-            this.tabPage2.Controls.Add(this.UnloadXrefBrowse_button);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(357, 294);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.Unload_tab.Controls.Add(this.UnloadXrefStart_button);
+            this.Unload_tab.Controls.Add(this.UnloadXref_listBox);
+            this.Unload_tab.Controls.Add(this.label3);
+            this.Unload_tab.Controls.Add(this.UnloadXrefBrowse_button);
+            this.Unload_tab.Location = new System.Drawing.Point(4, 22);
+            this.Unload_tab.Name = "Unload_tab";
+            this.Unload_tab.Padding = new System.Windows.Forms.Padding(3);
+            this.Unload_tab.Size = new System.Drawing.Size(357, 294);
+            this.Unload_tab.TabIndex = 1;
+            this.Unload_tab.Text = "Unload";
+            this.Unload_tab.UseVisualStyleBackColor = true;
+            // 
+            // UnloadXrefStart_button
+            // 
+            this.UnloadXrefStart_button.Location = new System.Drawing.Point(3, 263);
+            this.UnloadXrefStart_button.Name = "UnloadXrefStart_button";
+            this.UnloadXrefStart_button.Size = new System.Drawing.Size(351, 23);
+            this.UnloadXrefStart_button.TabIndex = 3;
+            this.UnloadXrefStart_button.Text = "Unload xrefs";
+            this.UnloadXrefStart_button.UseVisualStyleBackColor = true;
+            this.UnloadXrefStart_button.Click += new System.EventHandler(this.UnloadXrefStart_button_Click);
+            // 
+            // UnloadXref_listBox
+            // 
+            this.UnloadXref_listBox.FormattingEnabled = true;
+            this.UnloadXref_listBox.Location = new System.Drawing.Point(3, 32);
+            this.UnloadXref_listBox.Name = "UnloadXref_listBox";
+            this.UnloadXref_listBox.Size = new System.Drawing.Size(351, 225);
+            this.UnloadXref_listBox.TabIndex = 2;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(84, 8);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(224, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "Select drawings you want to unload all xrefs in";
             // 
             // UnloadXrefBrowse_button
             // 
-            this.UnloadXrefBrowse_button.Location = new System.Drawing.Point(7, 7);
+            this.UnloadXrefBrowse_button.Location = new System.Drawing.Point(3, 3);
             this.UnloadXrefBrowse_button.Name = "UnloadXrefBrowse_button";
             this.UnloadXrefBrowse_button.Size = new System.Drawing.Size(75, 23);
             this.UnloadXrefBrowse_button.TabIndex = 0;
             this.UnloadXrefBrowse_button.Text = "Browse";
             this.UnloadXrefBrowse_button.UseVisualStyleBackColor = true;
+            this.UnloadXrefBrowse_button.Click += new System.EventHandler(this.UnloadXrefBrowse_button_Click);
             // 
-            // label3
+            // Detach_tab
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(88, 12);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(227, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Select drawings you want to un load all xrefs in";
+            this.Detach_tab.Controls.Add(this.DetachXrefStart_button);
+            this.Detach_tab.Controls.Add(this.DetachXref_listBox);
+            this.Detach_tab.Controls.Add(this.label4);
+            this.Detach_tab.Controls.Add(this.DetachXrefBrowse_button);
+            this.Detach_tab.Location = new System.Drawing.Point(4, 22);
+            this.Detach_tab.Name = "Detach_tab";
+            this.Detach_tab.Size = new System.Drawing.Size(357, 294);
+            this.Detach_tab.TabIndex = 2;
+            this.Detach_tab.Text = "Detach";
+            this.Detach_tab.UseVisualStyleBackColor = true;
             // 
-            // UnloadXref_listBox
+            // DetachXrefBrowse_button
             // 
-            this.UnloadXref_listBox.FormattingEnabled = true;
-            this.UnloadXref_listBox.Location = new System.Drawing.Point(7, 37);
-            this.UnloadXref_listBox.Name = "UnloadXref_listBox";
-            this.UnloadXref_listBox.Size = new System.Drawing.Size(336, 225);
-            this.UnloadXref_listBox.TabIndex = 2;
+            this.DetachXrefBrowse_button.Location = new System.Drawing.Point(3, 3);
+            this.DetachXrefBrowse_button.Name = "DetachXrefBrowse_button";
+            this.DetachXrefBrowse_button.Size = new System.Drawing.Size(75, 23);
+            this.DetachXrefBrowse_button.TabIndex = 0;
+            this.DetachXrefBrowse_button.Text = "Browse";
+            this.DetachXrefBrowse_button.UseVisualStyleBackColor = true;
+            this.DetachXrefBrowse_button.Click += new System.EventHandler(this.DetachXrefBrowse_button_Click);
             // 
-            // UnloadXrefStart_button
+            // label4
             // 
-            this.UnloadXrefStart_button.Location = new System.Drawing.Point(7, 265);
-            this.UnloadXrefStart_button.Name = "UnloadXrefStart_button";
-            this.UnloadXrefStart_button.Size = new System.Drawing.Size(336, 23);
-            this.UnloadXrefStart_button.TabIndex = 3;
-            this.UnloadXrefStart_button.Text = "Unload xrefs";
-            this.UnloadXrefStart_button.UseVisualStyleBackColor = true;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(84, 8);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(225, 13);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Select drawings you want to detach all xrefs in";
+            // 
+            // DetachXref_listBox
+            // 
+            this.DetachXref_listBox.FormattingEnabled = true;
+            this.DetachXref_listBox.Location = new System.Drawing.Point(3, 32);
+            this.DetachXref_listBox.Name = "DetachXref_listBox";
+            this.DetachXref_listBox.Size = new System.Drawing.Size(351, 225);
+            this.DetachXref_listBox.TabIndex = 2;
+            // 
+            // DetachXrefStart_button
+            // 
+            this.DetachXrefStart_button.Location = new System.Drawing.Point(4, 264);
+            this.DetachXrefStart_button.Name = "DetachXrefStart_button";
+            this.DetachXrefStart_button.Size = new System.Drawing.Size(350, 23);
+            this.DetachXrefStart_button.TabIndex = 3;
+            this.DetachXrefStart_button.Text = "Detach";
+            this.DetachXrefStart_button.UseVisualStyleBackColor = true;
+            this.DetachXrefStart_button.Click += new System.EventHandler(this.DetachXrefStart_button_Click);
             // 
             // AddXrefForm
             // 
@@ -198,10 +256,12 @@
             this.Text = "AddXrefForm";
             this.Load += new System.EventHandler(this.AddXrefForm_Load);
             this.TabControl.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.Add_tab.ResumeLayout(false);
+            this.Add_tab.PerformLayout();
+            this.Unload_tab.ResumeLayout(false);
+            this.Unload_tab.PerformLayout();
+            this.Detach_tab.ResumeLayout(false);
+            this.Detach_tab.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -216,11 +276,16 @@
         private System.Windows.Forms.Button AddXrefStart_button;
         private System.Windows.Forms.ListBox AddXref_listBox;
         private System.Windows.Forms.TabControl TabControl;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage Add_tab;
+        private System.Windows.Forms.TabPage Unload_tab;
         private System.Windows.Forms.Button UnloadXrefBrowse_button;
         private System.Windows.Forms.Button UnloadXrefStart_button;
         private System.Windows.Forms.ListBox UnloadXref_listBox;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TabPage Detach_tab;
+        private System.Windows.Forms.Button DetachXrefStart_button;
+        private System.Windows.Forms.ListBox DetachXref_listBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button DetachXrefBrowse_button;
     }
 }

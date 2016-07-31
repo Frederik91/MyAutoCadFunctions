@@ -23,7 +23,7 @@ namespace TestXrefManager
                 if (result == DialogResult.OK)
                 {
                     xRefFile = _form.xrefFile;
-                    drawingList = _form.drawingList;
+                    drawingList = _form.AddXrefDrawingList;
                 }
                 if (result == DialogResult.None)
                 {

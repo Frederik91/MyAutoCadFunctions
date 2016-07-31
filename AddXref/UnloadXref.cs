@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XrefManager.Forms;
 
 namespace XrefManager
 {
@@ -15,10 +16,22 @@ namespace XrefManager
     {
         public void unloadXref()
         {
-            var DrawingList = getDrawingList();
-            if (DrawingList.Count == 0 || DrawingList == null)
+            var DrawingList = new List<string>();
+
+            using (var _form = new AddXrefForm())
             {
-                return;
+                _form.SetTab(1);
+
+                var result = _form.ShowDialog();
+
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    DrawingList = _form.UnloadXrefDrawingList;
+                }
+                if (result == System.Windows.Forms.DialogResult.None)
+                {
+                    return;
+                }
             }
 
             //Get the document
@@ -67,15 +80,27 @@ namespace XrefManager
                 }
             }
 
-            Doc.Editor.WriteMessage("Xrefene er unloaded");
+            Doc.Editor.WriteMessage("Xrefs unloaded\n");
         }
 
-        public void detechXref()
+        public void detachXref()
         {
-            var DrawingList = getDrawingList();
-            if (DrawingList.Count == 0 || DrawingList == null)
+            var DrawingList = new List<string>();
+
+            using (var _form = new AddXrefForm())
             {
-                return;
+                _form.SetTab(2);
+
+                var result = _form.ShowDialog();
+
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    DrawingList = _form.DetachXrefDrawingList;
+                }
+                if (result == System.Windows.Forms.DialogResult.None)
+                {
+                    return;
+                }
             }
 
             //Get the document
@@ -110,7 +135,7 @@ namespace XrefManager
                             {
                                 ObjectId detachid = xrNode.BlockTableRecordId;
                                 db.DetachXref(detachid);
-                                ed.WriteMessage("\nDetached successfully");
+                                ed.WriteMessage("\nDetached successfully\n");
                                 break;
                             }
                         }

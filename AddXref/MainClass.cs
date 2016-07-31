@@ -12,6 +12,7 @@ using System.IO;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Colors;
+using XrefManager.Forms;
 
 namespace XrefManager
 {
@@ -47,7 +48,7 @@ namespace XrefManager
         public void DetachXRef()
         {
             var UX = new UnloadXref();
-            UX.detechXref();
+            UX.detachXref();
         }
 
         [CommandMethod("AddXrefSpecialized", CommandFlags.Session)]
@@ -164,6 +165,34 @@ namespace XrefManager
             RV.ReplaceStringValue(drawingList, blockname.StringResult, attributeTag.StringResult, oldString.StringResult, newString.StringResult);
 
         }
+
+        [CommandMethod("ChangeAttributeDialog", CommandFlags.Session)]
+        public void ChangeAttribute_dialog()
+        {
+            var drawingList = new List<string>();
+
+            using (var _form = new PurgeAttributeForm())
+            {
+                _form.SetTabIndex(1);
+
+                var result = _form.ShowDialog();
+
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    drawingList = _form.attributeDrawingList;
+                }
+                if (result == System.Windows.Forms.DialogResult.None)
+                {
+                    return;
+                }
+
+                var RV = new ReplaceValue();
+
+                RV.ReplaceStringValue(drawingList, _form.attBlockname , _form.attAttributeName, _form.attOldValue, _form.attNewValue);
+
+            }
+        }
+
         [CommandMethod("MOVEXREF", CommandFlags.Session)]
         public void moveToXrefLayer()
         {

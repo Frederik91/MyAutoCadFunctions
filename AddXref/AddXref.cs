@@ -22,12 +22,14 @@ namespace XrefManager
         {
             using (var _form = new AddXrefForm())
             {
+                _form.SetTab(0);
+
                 var result = _form.ShowDialog();
                               
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {                   
                     xRefFile = _form.xrefFile;
-                    drawingList = _form.drawingList;
+                    drawingList = _form.AddXrefDrawingList;
                 }
                 if (result == System.Windows.Forms.DialogResult.None)
                 {

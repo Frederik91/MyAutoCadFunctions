@@ -107,6 +107,11 @@ namespace MyRibbonTab
             UpdateLayersThisDrawingButton.ShowText = true;
             UpdateLayersThisDrawingButton.CommandHandler = new MyCmdHandler();
 
+            RibbonButton ChangeAttributeValueButton = new RibbonButton();
+            ChangeAttributeValueButton.Text = "Change attribute value";
+            ChangeAttributeValueButton.ShowText = true;
+            ChangeAttributeValueButton.CommandHandler = new MyCmdHandler();
+
             #endregion
 
             ////////////////////////
@@ -119,10 +124,6 @@ namespace MyRibbonTab
             RibbonSplitButton LayerUpdateSplitButton = new RibbonSplitButton();
             LayerUpdateSplitButton.Text = "Layer Update";
             LayerUpdateSplitButton.ShowText = true;
-
-            RibbonButton ChangeAttributeValueButton = new RibbonButton();
-            ChangeAttributeValueButton.Text = "Change attribute value";
-            ChangeAttributeValueButton.ShowText = true;
 
             RibbonLabel LayerUpdateLabel = new RibbonLabel();
             LayerUpdateLabel.Text = "Update layers in:";
@@ -190,7 +191,7 @@ namespace MyRibbonTab
                             MC.LayerUpdate();
                             break;
                         case ("Change attribute value"):
-                            MC.ChangeAttribute();
+                            MC.ChangeAttribute_dialog();
                             break;
                         default:
                             break;
