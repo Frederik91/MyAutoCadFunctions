@@ -15,9 +15,17 @@ namespace XrefManager.Forms
         public List<string> purgeDrawingList { get; set; }
         public List<string> attributeDrawingList { get; set; }
 
+        Attribute attSettings = Attribute.Default;
+
+
         public PurgeAttributeForm()
         {
             InitializeComponent();
+
+            attBlockname = attSettings.BlockName;
+            attAttributeName = attSettings.AttributeName;
+            attOldValue = attSettings.OldValue;
+            attNewValue = attSettings.NewValue;
         }
 
         private void PurgeBrowse_button_Click(object sender, EventArgs e)
@@ -56,6 +64,13 @@ namespace XrefManager.Forms
             else
             {
                 DialogResult = DialogResult.OK;
+
+                attSettings.BlockName = attBlockname;
+                attSettings.AttributeName = attAttributeName;
+                attSettings.OldValue = attOldValue;
+                attSettings.NewValue = attNewValue;
+
+                attSettings.Save();
             }
 
             Close();

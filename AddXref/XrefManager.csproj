@@ -80,6 +80,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>AppSettings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Attribute.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Attribute.settings</DependentUpon>
+    </Compile>
     <Compile Include="ChangeBlockColorByLayer.cs" />
     <Compile Include="DrawingManager.cs" />
     <Compile Include="Forms\AddXrefForm.cs">
@@ -93,6 +98,18 @@
     </Compile>
     <Compile Include="Forms\PurgeAttributeForm.Designer.cs">
       <DependentUpon>PurgeAttributeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UpdateLayerAddProjectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UpdateLayerAddProjectForm.Designer.cs">
+      <DependentUpon>UpdateLayerAddProjectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UpdateLayerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UpdateLayerForm.Designer.cs">
+      <DependentUpon>UpdateLayerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LayerProperties.cs" />
     <Compile Include="LayerUpdate.cs" />
@@ -133,15 +150,23 @@
     <EmbeddedResource Include="Forms\PurgeAttributeForm.resx">
       <DependentUpon>PurgeAttributeForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UpdateLayerAddProjectForm.resx">
+      <DependentUpon>UpdateLayerAddProjectForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UpdateLayerForm.resx">
+      <DependentUpon>UpdateLayerForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Test\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="AppSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>AppSettings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Attribute.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Attribute.Designer.cs</LastGenOutput>
     </None>
     <None Include="ProjectList.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
