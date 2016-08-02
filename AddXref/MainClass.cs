@@ -24,6 +24,43 @@ namespace XrefManager
         {
         }
 
+        public bool checkXmlPath()
+        {
+            var appSettings = AppSettings.Default;
+
+            if (Directory.Exists(appSettings.XMLpath))
+            {
+                return true;
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Project folder not selected or selected directory does not exist. Please select a folder to store project information.");
+            }
+
+            while (true)
+            {
+                var browser = new System.Windows.Forms.FolderBrowserDialog();
+                browser.Description = "Specify location to store project files";
+                browser.ShowDialog();
+                if (!Directory.Exists(browser.SelectedPath) || string.IsNullOrEmpty(browser.SelectedPath))
+                {
+                    var answer = System.Windows.Forms.MessageBox.Show("Selected path is invalid, do you want to specify a new one?", "Error", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question);
+                    if (answer == System.Windows.Forms.DialogResult.No)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    appSettings.XMLpath = browser.SelectedPath;
+                    appSettings.Save();
+                    break;
+                }
+            }
+
+            return true;
+        }
+
         [CommandMethod("Ribb", CommandFlags.Session)]
         public void Ribb()
         {
@@ -169,27 +206,30 @@ namespace XrefManager
         [CommandMethod("ChangeAttributeDialog", CommandFlags.Session)]
         public void ChangeAttribute_dialog()
         {
-            var drawingList = new List<string>();
-
-            using (var _form = new PurgeAttributeForm())
+            if (checkXmlPath())
             {
-                _form.SetTabIndex(1);
+                var drawingList = new List<string>();
 
-                var result = _form.ShowDialog();
-
-                if (result == System.Windows.Forms.DialogResult.OK)
+                using (var _form = new PurgeAttributeForm())
                 {
-                    drawingList = _form.attributeDrawingList;
+                    _form.SetTabIndex(1);
+
+                    var result = _form.ShowDialog();
+
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                    {
+                        drawingList = _form.attributeDrawingList;
+                    }
+                    if (result == System.Windows.Forms.DialogResult.None)
+                    {
+                        return;
+                    }
+
+                    var RV = new ReplaceValue();
+
+                    RV.ReplaceStringValue(drawingList, _form.attBlockname, _form.attAttributeName, _form.attOldValue, _form.attNewValue);
+
                 }
-                if (result == System.Windows.Forms.DialogResult.None)
-                {
-                    return;
-                }
-
-                var RV = new ReplaceValue();
-
-                RV.ReplaceStringValue(drawingList, _form.attBlockname , _form.attAttributeName, _form.attOldValue, _form.attNewValue);
-
             }
         }
 

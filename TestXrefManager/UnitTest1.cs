@@ -19,7 +19,7 @@ namespace TestXrefManager
             using (var _form = new AddXrefForm())
             {
                 var result = _form.ShowDialog();
-            
+
                 if (result == DialogResult.OK)
                 {
                     xRefFile = _form.xrefFile;
@@ -32,6 +32,15 @@ namespace TestXrefManager
 
                 Assert.AreEqual(DialogResult.OK, result);
             }
+        }
+
+
+        [TestMethod]
+        public void checkXMLPath()
+        {
+            var MC = new MainClass();
+            Assert.AreEqual(true, MC.checkXmlPath());
+
         }
     }
 }
