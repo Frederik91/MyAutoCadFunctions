@@ -24,7 +24,8 @@ namespace XrefManager.Forms
 
         private void AddXrefForm_Load(object sender, EventArgs e)
         {
-            Visible = true;        }
+            Visible = true;
+        }
 
         private void AddxRefBrowse_button_Click(object sender, EventArgs e)
         {

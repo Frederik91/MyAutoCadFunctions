@@ -13,6 +13,7 @@ using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Colors;
 using XrefManager.Forms;
+using XrefManager.Workers;
 
 namespace XrefManager
 {
@@ -24,42 +25,7 @@ namespace XrefManager
         {
         }
 
-        public bool checkXmlPath()
-        {
-            var appSettings = AppSettings.Default;
-
-            if (Directory.Exists(appSettings.XMLpath))
-            {
-                return true;
-            }
-            else
-            {
-                System.Windows.Forms.MessageBox.Show("Project folder not selected or selected directory does not exist. Please select a folder to store project information.");
-            }
-
-            while (true)
-            {
-                var browser = new System.Windows.Forms.FolderBrowserDialog();
-                browser.Description = "Specify location to store project files";
-                browser.ShowDialog();
-                if (!Directory.Exists(browser.SelectedPath) || string.IsNullOrEmpty(browser.SelectedPath))
-                {
-                    var answer = System.Windows.Forms.MessageBox.Show("Selected path is invalid, do you want to specify a new one?", "Error", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question);
-                    if (answer == System.Windows.Forms.DialogResult.No)
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    appSettings.XMLpath = browser.SelectedPath;
-                    appSettings.Save();
-                    break;
-                }
-            }
-
-            return true;
-        }
+       
 
         [CommandMethod("Ribb", CommandFlags.Session)]
         public void Ribb()
@@ -126,20 +92,10 @@ namespace XrefManager
         }
 
         [CommandMethod("-LAYERUPDATETHISDRAWING", CommandFlags.Session)]
-        public void LayerUpdateWithArgs()
+        public void LayerUpdateThisDrawing()
         {
             var LU = new LayerUpdate();
-
-            Editor ed = Application.DocumentManager.MdiActiveDocument.Editor;
-
-            PromptResult prConfigPath = ed.GetString("\nEnter path to config file: ");
-            if (prConfigPath.Status != PromptStatus.OK)
-            {
-                ed.WriteMessage("No string was provided\n");
-                return;
-            }
-
-            LU.UpdateLayersThisDrawing(prConfigPath.StringResult);
+            LU.UpdateLayersThisDrawing();
         }
 
         [CommandMethod("ChangeAttribute", CommandFlags.Session)]
@@ -158,8 +114,6 @@ namespace XrefManager
 
             PromptStringOptions newStringOptions = new PromptStringOptions("\nEnter new attribute value");
             newStringOptions.AllowSpaces = true;
-
-
 
             PromptResult blockname = ed.GetString(blocknameOptions);
             if (blockname.Status != PromptStatus.OK)
@@ -206,7 +160,9 @@ namespace XrefManager
         [CommandMethod("ChangeAttributeDialog", CommandFlags.Session)]
         public void ChangeAttribute_dialog()
         {
-            if (checkXmlPath())
+            var xmlReader = new ReadXml();
+            
+            if (xmlReader.checkXmlPath())
             {
                 var drawingList = new List<string>();
 

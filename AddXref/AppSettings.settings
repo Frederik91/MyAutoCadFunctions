@@ -2,7 +2,19 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="XrefManager" GeneratedClassName="AppSettings">
   <Profiles />
   <Settings>
-    <Setting Name="XMLpath" Type="System.String" Scope="User">
+    <Setting Name="ProjectsXmlPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="BlockName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AttributeName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="OldValue" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="NewValue" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using XrefManager.Models;
 
 namespace XrefManager.Forms
 {
     public partial class UpdateLayerAddProjectForm : Form
     {
+        public List<ProjectData> ProjectDataList { get; set; }
+
         public UpdateLayerAddProjectForm()
         {
             InitializeComponent();
@@ -53,7 +57,21 @@ namespace XrefManager.Forms
 
         private void AddProject_button_Click(object sender, EventArgs e)
         {
-
+            if (!string.IsNullOrEmpty(ProjectName) && File.Exists(configPath) && Directory.Exists(rootFolder))
+            {
+                var projectData = new ProjectData();
+                projectData.ProjectName = ProjectName;
+                projectData.ConfigPath = configPath;
+                projectData.RootPath = rootFolder;
+                ProjectDataList.Add(projectData);
+                Close();
+                return;
+            }
+            var res = MessageBox.Show("The data you entered contains errors, please check that all file paths entered exists.\nDo you want to try again?", "Warning", MessageBoxButtons.YesNo );
+            if (res == DialogResult.No)
+            {
+                Close();
+            }
         }
     }
 }

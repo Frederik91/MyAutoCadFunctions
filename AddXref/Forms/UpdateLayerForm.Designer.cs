@@ -88,6 +88,7 @@
             this.BrowseDrawings_button.TabIndex = 6;
             this.BrowseDrawings_button.Text = "Browse";
             this.BrowseDrawings_button.UseVisualStyleBackColor = true;
+            this.BrowseDrawings_button.Click += new System.EventHandler(this.BrowseDrawings_button_Click);
             // 
             // StartLayerUpdate_button
             // 
@@ -97,6 +98,7 @@
             this.StartLayerUpdate_button.TabIndex = 7;
             this.StartLayerUpdate_button.Text = "Update layers";
             this.StartLayerUpdate_button.UseVisualStyleBackColor = true;
+            this.StartLayerUpdate_button.Click += new System.EventHandler(this.StartLayerUpdate_button_Click);
             // 
             // UpdateLayerForm
             // 
@@ -112,6 +114,7 @@
             this.Controls.Add(this.Projects_comboBox);
             this.Name = "UpdateLayerForm";
             this.Text = "Update layers";
+            this.Load += new System.EventHandler(this.UpdateLayerForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

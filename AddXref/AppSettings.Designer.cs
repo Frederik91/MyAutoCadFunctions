@@ -26,12 +26,60 @@ namespace XrefManager {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string XMLpath {
+        public string ProjectsXmlPath {
             get {
-                return ((string)(this["XMLpath"]));
+                return ((string)(this["ProjectsXmlPath"]));
             }
             set {
-                this["XMLpath"] = value;
+                this["ProjectsXmlPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BlockName {
+            get {
+                return ((string)(this["BlockName"]));
+            }
+            set {
+                this["BlockName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AttributeName {
+            get {
+                return ((string)(this["AttributeName"]));
+            }
+            set {
+                this["AttributeName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string OldValue {
+            get {
+                return ((string)(this["OldValue"]));
+            }
+            set {
+                this["OldValue"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string NewValue {
+            get {
+                return ((string)(this["NewValue"]));
+            }
+            set {
+                this["NewValue"] = value;
             }
         }
     }

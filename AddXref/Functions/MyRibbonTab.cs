@@ -185,7 +185,7 @@ namespace MyRibbonTab
                             MC.PurgeDrawings();
                             break;
                         case ("This drawing"):
-                            MC.LayerUpdateWithArgs();
+                            MC.LayerUpdateThisDrawing();
                             break;
                         case ("Multiple drawings"):
                             MC.LayerUpdate();

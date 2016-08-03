@@ -79,13 +79,6 @@ namespace XrefManager
             }
         }
 
-        [CommandMethod("MagiCADTest")]
-        public void MagiCadTest(string filePath)
-        {
-            var MT = new MagiTest();
-            MT.test();
-        }
-
         [CommandMethod("CLOSEDRAWING")]
         public void CLOSEDRAWING(string filePath)
         {

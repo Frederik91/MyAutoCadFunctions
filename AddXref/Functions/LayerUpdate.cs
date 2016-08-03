@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using XrefManager.Workers;
 
 namespace XrefManager
 {
@@ -21,28 +21,54 @@ namespace XrefManager
         private List<string> failedDrawings = new List<string>();
         private List<string> drawingList = new List<string>();
 
-        public void UpdateLayersThisDrawing(string configPath)
+        public void UpdateLayersThisDrawing()
         {
+            var doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+
+            var reader = new ReadXml();
+            var projectDataList = reader.readProjectXml();
+            string configPath = string.Empty;
+            var projectLocator = new LocateFileProject();
+
+            foreach (var project in projectDataList)
+            {
+                if (projectLocator.FileExists(project.RootPath, doc.Name))
+                {
+                    configPath = project.ConfigPath;
+                }
+            }
+
+            if (string.IsNullOrEmpty(configPath) || !File.Exists(configPath))
+            {
+                var res = System.Windows.Forms.MessageBox.Show("Drawing is not connected to a project. Do you want to create a new project?", "Drawing not connected to project", System.Windows.Forms.MessageBoxButtons.YesNo);
+                if (res == System.Windows.Forms.DialogResult.Yes)
+                {
+                    UpdateLayers();
+                }
+                return;
+            }
+
             propertyList = ReadLayerPropertyFile(configPath);
 
             Document document = Application.DocumentManager.MdiActiveDocument;
 
             ModifyOpenDrawing(document);
 
-            document.Editor.WriteMessage("\nModified " + layersModified + " out of " + totalLayers + " layers");
+            document.Editor.WriteMessage("\nModified " + layersModified + " out of " + totalLayers + " layers\n");
         }
 
         public void UpdateLayers()
         {
-            var fileDiag = new OpenFileDialog();
-            fileDiag.Filter = "*.txt | *.txt";
-            fileDiag.ShowDialog();
-            if (fileDiag.CheckFileExists)
+            using (var form = new Forms.UpdateLayerForm())
             {
-                propertyList = ReadLayerPropertyFile(fileDiag.FileName);
+                form.ShowDialog();
+                if (string.IsNullOrEmpty(form.configPath))
+                {
+                    return;
+                }
+                propertyList = ReadLayerPropertyFile(form.configPath);
+                drawingList = form.DrawingList;
             }
-
-            drawingList = getDrawingList();
 
             ChangeLayersOnDrawings(propertyList, drawingList);
         }

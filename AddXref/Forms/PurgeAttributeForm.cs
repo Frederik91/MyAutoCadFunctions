@@ -15,7 +15,7 @@ namespace XrefManager.Forms
         public List<string> purgeDrawingList { get; set; }
         public List<string> attributeDrawingList { get; set; }
 
-        Attribute attSettings = Attribute.Default;
+        AppSettings attSettings = AppSettings.Default;
 
 
         public PurgeAttributeForm()
