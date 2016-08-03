@@ -31,13 +31,13 @@ namespace XrefManager.Forms
         {
             using (var AddProjectForm = new UpdateLayerAddProjectForm())
             {
-                AddProjectForm.ProjectDataList = projectDataList;
                 AddProjectForm.ShowDialog();
-                projectDataList = AddProjectForm.ProjectDataList;
+                if (AddProjectForm.projectData != null)
+                {
+                    projectDataList.Add(AddProjectForm.projectData);
+                    saveProjectData();
+                }                
             }
-            var writeXml = new Workers.WriteXml();
-            writeXml.writeProjectXml(projectDataList);
-            Projects_comboBox.DataSource = createComboboxList();
         }
 
         private List<string> createComboboxList()
@@ -80,6 +80,38 @@ namespace XrefManager.Forms
         private void UpdateLayerForm_Load(object sender, EventArgs e)
         {
             Visible = true;
+        }
+
+        private void EditProject_button_Click(object sender, EventArgs e)
+        {
+            var selectedProject = projectDataList[Projects_comboBox.SelectedIndex];
+            using (var form = new UpdateLayerAddProjectForm())
+            {              
+                form.ProjectName = selectedProject.ProjectName;
+                form.configPath = selectedProject.ConfigPath;
+                form.rootFolder = selectedProject.RootPath;
+
+                form.ShowDialog();
+
+                if (form.projectData != null)
+                {
+                    projectDataList[Projects_comboBox.SelectedIndex] = form.projectData;
+                    saveProjectData();
+                }                
+            }
+        }
+
+        private void saveProjectData()
+        {
+            var writeXml = new Workers.WriteXml();
+            writeXml.writeProjectXml(projectDataList);
+            Projects_comboBox.DataSource = createComboboxList();
+        }
+
+        private void DeleteProject_button_Click(object sender, EventArgs e)
+        {
+            projectDataList.RemoveAt(Projects_comboBox.SelectedIndex);
+            saveProjectData();
         }
     }
 }

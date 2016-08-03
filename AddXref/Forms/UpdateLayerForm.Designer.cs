@@ -35,6 +35,8 @@
             this.Drawings_listBox = new System.Windows.Forms.ListBox();
             this.BrowseDrawings_button = new System.Windows.Forms.Button();
             this.StartLayerUpdate_button = new System.Windows.Forms.Button();
+            this.EditProject_button = new System.Windows.Forms.Button();
+            this.DeleteProject_button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Projects_comboBox
@@ -100,11 +102,33 @@
             this.StartLayerUpdate_button.UseVisualStyleBackColor = true;
             this.StartLayerUpdate_button.Click += new System.EventHandler(this.StartLayerUpdate_button_Click);
             // 
+            // EditProject_button
+            // 
+            this.EditProject_button.Location = new System.Drawing.Point(184, 26);
+            this.EditProject_button.Name = "EditProject_button";
+            this.EditProject_button.Size = new System.Drawing.Size(37, 23);
+            this.EditProject_button.TabIndex = 8;
+            this.EditProject_button.Text = "Edit";
+            this.EditProject_button.UseVisualStyleBackColor = true;
+            this.EditProject_button.Click += new System.EventHandler(this.EditProject_button_Click);
+            // 
+            // DeleteProject_button
+            // 
+            this.DeleteProject_button.Location = new System.Drawing.Point(227, 26);
+            this.DeleteProject_button.Name = "DeleteProject_button";
+            this.DeleteProject_button.Size = new System.Drawing.Size(44, 23);
+            this.DeleteProject_button.TabIndex = 9;
+            this.DeleteProject_button.Text = "Del";
+            this.DeleteProject_button.UseVisualStyleBackColor = true;
+            this.DeleteProject_button.Click += new System.EventHandler(this.DeleteProject_button_Click);
+            // 
             // UpdateLayerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 255);
+            this.Controls.Add(this.DeleteProject_button);
+            this.Controls.Add(this.EditProject_button);
             this.Controls.Add(this.StartLayerUpdate_button);
             this.Controls.Add(this.BrowseDrawings_button);
             this.Controls.Add(this.Drawings_listBox);
@@ -129,5 +153,7 @@
         private System.Windows.Forms.ListBox Drawings_listBox;
         private System.Windows.Forms.Button BrowseDrawings_button;
         private System.Windows.Forms.Button StartLayerUpdate_button;
+        private System.Windows.Forms.Button EditProject_button;
+        private System.Windows.Forms.Button DeleteProject_button;
     }
 }

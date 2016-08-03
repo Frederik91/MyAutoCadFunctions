@@ -14,7 +14,7 @@ namespace XrefManager.Forms
 {
     public partial class UpdateLayerAddProjectForm : Form
     {
-        public List<ProjectData> ProjectDataList { get; set; }
+        public ProjectData projectData { get; set; }
 
         public UpdateLayerAddProjectForm()
         {
@@ -59,17 +59,18 @@ namespace XrefManager.Forms
         {
             if (!string.IsNullOrEmpty(ProjectName) && File.Exists(configPath) && Directory.Exists(rootFolder))
             {
-                var projectData = new ProjectData();
-                projectData.ProjectName = ProjectName;
-                projectData.ConfigPath = configPath;
-                projectData.RootPath = rootFolder;
-                ProjectDataList.Add(projectData);
+                var projData = new ProjectData();
+                projData.ProjectName = ProjectName;
+                projData.ConfigPath = configPath;
+                projData.RootPath = rootFolder;
+                projectData = projData;
                 Close();
                 return;
             }
             var res = MessageBox.Show("The data you entered contains errors, please check that all file paths entered exists.\nDo you want to try again?", "Warning", MessageBoxButtons.YesNo );
             if (res == DialogResult.No)
             {
+                projectData = null;
                 Close();
             }
         }
