@@ -10,7 +10,7 @@ namespace LayerConfigWindow.ViewModels
     {
         private ViewModelBase m_viewModelBase;
 
-        public ViewModelBase CurrentViewModel { get { return m_viewModelBase; } set { m_viewModelBase = value; OnPropertyChanged(); } }
+        public ViewModelBase CurrentViewModel { get { return m_viewModelBase; } set { m_viewModelBase = value; OnPropertyChanged("CurrentViewModel"); } }
 
         public MainViewModel()
         {

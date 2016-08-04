@@ -1,4 +1,5 @@
-﻿using LayerConfigWindow.Commands;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,20 +8,24 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace LayerConfigWindow.ViewModels
+namespace LayerConfigEditor.ViewModel
 {
+
+
     public class LayerViewModel : ViewModelBase
     {
+        public RelayCommand testCommand { get; private set; }
+
         public LayerViewModel()
         {
-            testCommand = new DelegateCommand(o => testButton());
+            testCommand = new RelayCommand(testMethod);
         }
 
-        private void testButton()
+        private void testMethod()
         {
             MessageBox.Show("YEAH");
         }
-
-        public ICommand testCommand { get; private set; }
     }
+
+
 }

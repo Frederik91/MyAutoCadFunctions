@@ -36,16 +36,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AcCoreMgd">
-      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2016\accoremgd.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\ObjectARX 2016\inc\AcCoreMgd.dll</HintPath>
     </Reference>
     <Reference Include="AcCui">
-      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2016\AcCui.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\ObjectARX 2016\inc\AcCui.dll</HintPath>
     </Reference>
     <Reference Include="AcDbMgd">
-      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2016\acdbmgd.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\ObjectARX 2016\inc\AcDbMgd.dll</HintPath>
     </Reference>
     <Reference Include="AcMgd">
-      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2016\acmgd.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\ObjectARX 2016\inc\AcMgd.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
@@ -77,10 +77,6 @@
     <ProjectReference Include="..\AddXref\XrefManager.csproj">
       <Project>{b605ae21-a1e2-4fec-9d03-96d373a30ff8}</Project>
       <Name>XrefManager</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DrawingManagerDll\DrawingManagerDll.csproj">
-      <Project>{f7c58349-140c-406a-aa85-f7ff480f3e54}</Project>
-      <Name>DrawingManagerDll</Name>
     </ProjectReference>
     <ProjectReference Include="..\TestProj\TestProj.csproj">
       <Project>{e2ec02e1-f2ff-400a-a09b-d04b625764d9}</Project>
