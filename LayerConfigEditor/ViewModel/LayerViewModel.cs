@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using LayerConfigEditor.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,21 +11,19 @@ using System.Windows.Input;
 
 namespace LayerConfigEditor.ViewModel
 {
-
-
     public class LayerViewModel : ViewModelBase
     {
-        public RelayCommand testCommand { get; private set; }
+        public List<LayerFilter> LayerFilterList { get { return m_mainViewModel.LayerFilterList; } set { m_mainViewModel.LayerFilterList = value; RaisePropertyChanged(); } }
 
-        public LayerViewModel()
+        private MainViewModel m_mainViewModel;
+
+
+        public LayerViewModel(MainViewModel _mainViewModel)
         {
-            testCommand = new RelayCommand(testMethod);
+            m_mainViewModel = _mainViewModel;
         }
 
-        private void testMethod()
-        {
-            MessageBox.Show("YEAH");
-        }
+
     }
 
 

@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestXrefManager", "TestXref
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerConfigEditor", "LayerConfigEditor\LayerConfigEditor.csproj", "{F3171BB5-555C-4482-95AD-2A56932DC750}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{217D7E6E-7E4F-43E4-A618-6B99C6B6745E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D97EB186-5AAC-46F2-9FEC-221B4F372E23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B605AE21-A1E2-4FEC-9D03-96D373A30FF8} = {217D7E6E-7E4F-43E4-A618-6B99C6B6745E}
+		{88ED791C-6B8F-42D6-AC7A-906BB9411011} = {D97EB186-5AAC-46F2-9FEC-221B4F372E23}
+		{F3171BB5-555C-4482-95AD-2A56932DC750} = {217D7E6E-7E4F-43E4-A618-6B99C6B6745E}
 	EndGlobalSection
 EndGlobal

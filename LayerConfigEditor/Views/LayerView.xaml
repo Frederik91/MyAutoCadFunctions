@@ -8,6 +8,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Button Command="{Binding testCommand}" Height="50" Width="100">Click here</Button>
+        <DataGrid ItemsSource="{Binding LayerFilterList}">
+            
+        </DataGrid>
     </Grid>
 </UserControl>
