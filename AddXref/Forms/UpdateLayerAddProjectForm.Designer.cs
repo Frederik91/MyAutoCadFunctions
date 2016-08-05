@@ -32,11 +32,11 @@
             this.ProjectName_textBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ConfigPath_textBox = new System.Windows.Forms.TextBox();
-            this.ConfigPath_button = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.RootFolder_listBox = new System.Windows.Forms.TextBox();
             this.RootFolder_button = new System.Windows.Forms.Button();
             this.AddProject_button = new System.Windows.Forms.Button();
+            this.openConfigTool_button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -71,16 +71,6 @@
             this.ConfigPath_textBox.Size = new System.Drawing.Size(235, 20);
             this.ConfigPath_textBox.TabIndex = 3;
             // 
-            // ConfigPath_button
-            // 
-            this.ConfigPath_button.Location = new System.Drawing.Point(330, 37);
-            this.ConfigPath_button.Name = "ConfigPath_button";
-            this.ConfigPath_button.Size = new System.Drawing.Size(75, 23);
-            this.ConfigPath_button.TabIndex = 4;
-            this.ConfigPath_button.Text = "Browse";
-            this.ConfigPath_button.UseVisualStyleBackColor = true;
-            this.ConfigPath_button.Click += new System.EventHandler(this.ConfigPath_button_Click);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -101,7 +91,7 @@
             // 
             this.RootFolder_button.Location = new System.Drawing.Point(330, 60);
             this.RootFolder_button.Name = "RootFolder_button";
-            this.RootFolder_button.Size = new System.Drawing.Size(75, 23);
+            this.RootFolder_button.Size = new System.Drawing.Size(72, 23);
             this.RootFolder_button.TabIndex = 7;
             this.RootFolder_button.Text = "Browse";
             this.RootFolder_button.UseVisualStyleBackColor = true;
@@ -111,22 +101,32 @@
             // 
             this.AddProject_button.Location = new System.Drawing.Point(15, 89);
             this.AddProject_button.Name = "AddProject_button";
-            this.AddProject_button.Size = new System.Drawing.Size(390, 23);
+            this.AddProject_button.Size = new System.Drawing.Size(387, 23);
             this.AddProject_button.TabIndex = 8;
             this.AddProject_button.Text = "Save";
             this.AddProject_button.UseVisualStyleBackColor = true;
             this.AddProject_button.Click += new System.EventHandler(this.AddProject_button_Click);
             // 
+            // openConfigTool_button
+            // 
+            this.openConfigTool_button.Location = new System.Drawing.Point(330, 34);
+            this.openConfigTool_button.Name = "openConfigTool_button";
+            this.openConfigTool_button.Size = new System.Drawing.Size(72, 23);
+            this.openConfigTool_button.TabIndex = 9;
+            this.openConfigTool_button.Text = "ConfigTool";
+            this.openConfigTool_button.UseVisualStyleBackColor = true;
+            this.openConfigTool_button.Click += new System.EventHandler(this.openConfigTool_button_Click);
+            // 
             // UpdateLayerAddProjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(417, 122);
+            this.ClientSize = new System.Drawing.Size(411, 122);
+            this.Controls.Add(this.openConfigTool_button);
             this.Controls.Add(this.AddProject_button);
             this.Controls.Add(this.RootFolder_button);
             this.Controls.Add(this.RootFolder_listBox);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.ConfigPath_button);
             this.Controls.Add(this.ConfigPath_textBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.ProjectName_textBox);
@@ -144,10 +144,10 @@
         private System.Windows.Forms.TextBox ProjectName_textBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox ConfigPath_textBox;
-        private System.Windows.Forms.Button ConfigPath_button;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox RootFolder_listBox;
         private System.Windows.Forms.Button RootFolder_button;
         private System.Windows.Forms.Button AddProject_button;
+        private System.Windows.Forms.Button openConfigTool_button;
     }
 }

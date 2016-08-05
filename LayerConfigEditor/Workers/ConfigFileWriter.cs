@@ -38,12 +38,37 @@ namespace LayerConfigEditor.Workers
 
         private string mapper(LayerFilter layerFilter)
         {
+            var freeze = "";
+            var thaw = "";
+            var layerOn = "";
+            var layerOff = "";
+
+            if (layerFilter.Freeze)
+            {
+                freeze = "x";
+            }
+
+            if (layerFilter.Thaw)
+            {
+                thaw = "x";
+            }
+
+            if (layerFilter.LayerOn)
+            {
+                layerOn = "x";
+            }
+
+            if (layerFilter.LayerOff)
+            {
+                layerOff = "x";
+            }
+
             return layerFilter.LayerName + "\t"
-                 + layerFilter.Freeze + "\t"
-                 + layerFilter.Thaw + "\t"
+                 + freeze + "\t"
+                 + thaw + "\t"
                  + layerFilter.Color + "\t"
-                 + layerFilter.LayerOn + "\t"
-                 + layerFilter.LayerOff;
+                 + layerOn + "\t"
+                 + layerOff;
         }
     }
 }

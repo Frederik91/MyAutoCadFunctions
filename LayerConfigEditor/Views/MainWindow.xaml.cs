@@ -21,10 +21,12 @@ namespace LayerConfigEditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        public MainViewModel MainViewModel;
+
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            DataContext = MainViewModel = new MainViewModel();
         }
     }
 }

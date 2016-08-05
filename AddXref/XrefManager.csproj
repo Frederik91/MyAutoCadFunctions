@@ -88,6 +88,7 @@
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -141,8 +142,6 @@
     <Compile Include="Functions\RevisionLine.cs" />
     <Compile Include="Functions\MyRibbonTab.cs" />
     <Compile Include="Functions\UnloadXref.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Workers\LocateFileProject.cs" />
     <Compile Include="Workers\ReadXml.cs" />
     <Compile Include="Workers\WriteXml.cs" />
@@ -164,7 +163,12 @@
       <DependentUpon>UpdateLayerForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\LayerConfigEditor\LayerConfigEditor.csproj">
+      <Project>{F3171BB5-555C-4482-95AD-2A56932DC750}</Project>
+      <Name>LayerConfigEditor</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="AppSettings.settings">

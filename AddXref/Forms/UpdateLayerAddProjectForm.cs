@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LayerConfigEditor;
+using LayerConfigEditor.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,15 +21,6 @@ namespace XrefManager.Forms
         public UpdateLayerAddProjectForm()
         {
             InitializeComponent();
-        }
-
-        private void ConfigPath_button_Click(object sender, EventArgs e)
-        {
-            var ConfigPathDialog = new OpenFileDialog();
-            ConfigPathDialog.DefaultExt = "Text Files | *.txt";
-            ConfigPathDialog.CheckFileExists = true;
-            ConfigPathDialog.ShowDialog();
-            configPath = ConfigPathDialog.FileName;
         }
 
         private void RootFolder_button_Click(object sender, EventArgs e)
@@ -67,12 +60,27 @@ namespace XrefManager.Forms
                 Close();
                 return;
             }
-            var res = MessageBox.Show("The data you entered contains errors, please check that all file paths entered exists.\nDo you want to try again?", "Warning", MessageBoxButtons.YesNo );
+            var res = MessageBox.Show("The data you entered contains errors, please check that all file paths entered exists.\nDo you want to try again?", "Warning", MessageBoxButtons.YesNo);
             if (res == DialogResult.No)
             {
                 projectData = null;
                 Close();
             }
+        }
+
+        private void openConfigTool_button_Click(object sender, EventArgs e)
+        {
+            var configTool = new MainWindow();
+            configTool.ShowDialog();
+
+            var configToolVM = configTool.MainViewModel;
+
+            if (configToolVM.configSelected)
+            {
+                configPath = configToolVM.configFilePath;
+            }
+
+
         }
     }
 }

@@ -57,7 +57,6 @@ namespace TestXrefManager
         {
             var root = @"\\cowi.net\projects\A050000\A051350";
             var FilePath = @"O:\A050000\A051350\3.7 Tegninger\E40 RIE\E43\00 Modellfiler\11448-05-E-430-XX-001.dwg";
-            var FilePath2 = @"O:\A005000\A009727\BUSP 2\3.7 Tegninger\E43\00-Modellfiler\F50-01-E-430-00-33.dwg";
 
             var LF = new LocateFileProject();
             Assert.IsTrue(LF.FileExists(root,FilePath));

@@ -18,12 +18,14 @@ namespace LayerConfigEditor.ViewModel
         public string configFilePath = string.Empty;
         public ViewModelBase CurrentViewModel { get { return m_currentViewModel; } set { m_currentViewModel = value; RaisePropertyChanged(); } }
         public List<LayerFilter> LayerFilterList { get { return m_layerFilterList; } set { m_layerFilterList = value; RaisePropertyChanged(); } }
+        public bool configSelected = false;
 
         public RelayCommand NewConfigCommand { get; private set; }
         public RelayCommand OpenConfigCommand { get; private set; }
         public RelayCommand SaveConfigCommand { get; private set; }
         public RelayCommand SaveAsConfigCommand { get; private set; }
         public RelayCommand ExitCommand { get; private set; }
+        public RelayCommand ConfigFileSelectedCommand { get; private set; }
 
         public MainViewModel()
         {
@@ -32,6 +34,13 @@ namespace LayerConfigEditor.ViewModel
             SaveConfigCommand = new RelayCommand(SaveConfig);
             SaveAsConfigCommand = new RelayCommand(SaveAsConfig);
             ExitCommand = new RelayCommand(Exit);
+            ConfigFileSelectedCommand = new RelayCommand(ConfigFileSelected);
+        }
+
+        private void ConfigFileSelected()
+        {
+            configSelected = true;
+            Application.Current.MainWindow.Close();
         }
 
         private void NewConfig()
@@ -48,7 +57,7 @@ namespace LayerConfigEditor.ViewModel
             dialog.ShowDialog();
 
             var reader = new ConfigFileReader();
-            (CurrentViewModel as LayerViewModel).LayerFilterList = reader.readConfigFile(dialog.FileName);
+            LayerFilterList = reader.readConfigFile(dialog.FileName);
             configFilePath = dialog.FileName;
             CurrentViewModel = new LayerViewModel(this);
         }
