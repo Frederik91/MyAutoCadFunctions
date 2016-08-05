@@ -4,6 +4,7 @@ using LayerConfigEditor.Models;
 using LayerConfigEditor.Workers;
 using Microsoft.Win32;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
@@ -14,6 +15,7 @@ namespace LayerConfigEditor.ViewModel
     {
         private ViewModelBase m_currentViewModel;
         private List<LayerFilter> m_layerFilterList;
+        private MainWindow mainWindow;
 
         public string configFilePath = string.Empty;
         public ViewModelBase CurrentViewModel { get { return m_currentViewModel; } set { m_currentViewModel = value; RaisePropertyChanged(); } }
@@ -27,8 +29,16 @@ namespace LayerConfigEditor.ViewModel
         public RelayCommand ExitCommand { get; private set; }
         public RelayCommand ConfigFileSelectedCommand { get; private set; }
 
-        public MainViewModel()
+        public MainViewModel(MainWindow _mainWindow)
         {
+            mainWindow = _mainWindow;
+
+            if (File.Exists(configFilePath))
+            {
+                var reader = new ConfigFileReader();
+                LayerFilterList = reader.readConfigFile(configFilePath);
+            }
+
             NewConfigCommand = new RelayCommand(NewConfig);
             OpenConfigCommand = new RelayCommand(OpenConfig);
             SaveConfigCommand = new RelayCommand(SaveConfig);
@@ -40,14 +50,14 @@ namespace LayerConfigEditor.ViewModel
         private void ConfigFileSelected()
         {
             configSelected = true;
-            Application.Current.MainWindow.Close();
+            SaveConfig();
+            Exit();
         }
 
         private void NewConfig()
         {
             LayerFilterList = new List<LayerFilter>();
             configFilePath = string.Empty;
-            CurrentViewModel = new LayerViewModel(this);
         }
 
         private void OpenConfig()
@@ -56,10 +66,12 @@ namespace LayerConfigEditor.ViewModel
             dialog.DefaultExt = "Text files | *.txt";
             dialog.ShowDialog();
 
-            var reader = new ConfigFileReader();
-            LayerFilterList = reader.readConfigFile(dialog.FileName);
-            configFilePath = dialog.FileName;
-            CurrentViewModel = new LayerViewModel(this);
+            if (File.Exists(dialog.FileName))
+            {
+                var reader = new ConfigFileReader();
+                LayerFilterList = reader.readConfigFile(dialog.FileName);
+                configFilePath = dialog.FileName;
+            }
         }
 
         private void SaveConfig()
@@ -92,7 +104,7 @@ namespace LayerConfigEditor.ViewModel
 
         private void Exit()
         {
-            Application.Current.MainWindow.Close(); ;
+            mainWindow.Close();
         }
     }
 }

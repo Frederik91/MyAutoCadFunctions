@@ -71,6 +71,7 @@ namespace XrefManager.Forms
         private void openConfigTool_button_Click(object sender, EventArgs e)
         {
             var configTool = new MainWindow();
+            configTool.MainViewModel.configFilePath = configPath;
             configTool.ShowDialog();
 
             var configToolVM = configTool.MainViewModel;

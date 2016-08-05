@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LayerConfigEditor.Views"
         xmlns:vm="clr-namespace:LayerConfigEditor.ViewModel"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="LayerConfigEditor.MainWindow"
         mc:Ignorable="d"
@@ -16,55 +15,15 @@
         </Grid.RowDefinitions>
         <Menu IsMainMenu="True">
             <MenuItem Header="File">
-                <MenuItem Header="New" Command="{Binding NewConfigCommand}">
-                    <MenuItem.Icon>
-                        <Image>
-                            <Image.Source>
-                                <BitmapImage UriSource="C:\Users\frede\Source\Repos\MyAutoCadFunctions\LayerConfigEditor\Icons\New.png"/>
-                            </Image.Source>
-                        </Image>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Open" Command="{Binding OpenConfigCommand}">
-                    <MenuItem.Icon>
-                        <Image>
-                            <Image.Source>
-                                <BitmapImage UriSource="C:\Users\frede\Source\Repos\MyAutoCadFunctions\LayerConfigEditor\Icons\Open.png"/>
-                            </Image.Source>
-                        </Image>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Save" Command="{Binding SaveConfigCommand}">
-                    <MenuItem.Icon>
-                        <Image>
-                            <Image.Source>
-                                <BitmapImage UriSource="C:\Users\frede\Source\Repos\MyAutoCadFunctions\LayerConfigEditor\Icons\Save.png"/>
-                            </Image.Source>
-                        </Image>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Save As..." Command="{Binding SaveAsConfigCommand}">
-                    <MenuItem.Icon>
-                        <Image>
-                            <Image.Source>
-                                <BitmapImage UriSource="C:\Users\frede\Source\Repos\MyAutoCadFunctions\LayerConfigEditor\Icons\Save.png"/>
-                            </Image.Source>
-                        </Image>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Exit" Command="{Binding ExitCommand}">
-                    <MenuItem.Icon>
-                        <Image>
-                            <Image.Source>
-                                <BitmapImage UriSource="C:\Users\frede\Source\Repos\MyAutoCadFunctions\LayerConfigEditor\Icons\Exit.png"/>
-                            </Image.Source>
-                        </Image>
-                    </MenuItem.Icon>
-                </MenuItem>
+                <MenuItem Header="New" Command="{Binding NewConfigCommand}"/>
+                <MenuItem Header="Open" Command="{Binding OpenConfigCommand}"/>
+                <MenuItem Header="Save" Command="{Binding SaveConfigCommand}"/>
+                <MenuItem Header="Save As..." Command="{Binding SaveAsConfigCommand}"/>
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
             </MenuItem>
             <MenuItem  HorizontalAlignment="Right" Header="Select current config file" Command="{Binding ConfigFileSelectedCommand}"/>
         </Menu>
-        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding LayerFilterList}" CanUserAddRows="true"/>
     </Grid>
 
 </Window>

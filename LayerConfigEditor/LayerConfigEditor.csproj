@@ -76,11 +76,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\LayerFilter.cs" />
-    <Compile Include="ViewModel\LayerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="Views\LayerView.xaml.cs">
-      <DependentUpon>LayerView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Workers\ConfigFileReader.cs" />
     <Compile Include="Workers\ConfigFileWriter.cs" />
     <Page Include="Views\MainWindow.xaml">
@@ -95,10 +91,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\LayerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -127,20 +119,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\Open.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\Save.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\New.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\Exit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
