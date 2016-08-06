@@ -35,8 +35,8 @@ namespace MyRibbonTab
             /////////////////////////////////////
             // create Ribbon tab
             RibbonTab Tab = new RibbonTab();
-            Tab.Title = "Test Ribbon";
-            Tab.Id = "TESTRIBBON_TAB_ID";
+            Tab.Title = "Drawing manager";
+            Tab.Id = "DRAWINGMANAGER_TAB_ID";
 
             ribbonControl.Tabs.Add(Tab);
 
@@ -89,6 +89,34 @@ namespace MyRibbonTab
 
             #endregion
 
+            #region Update Layers Buttons
+
+            Autodesk.Windows.RibbonButton UpdateLayersThisDrawingButton = new RibbonButton();
+            UpdateLayersThisDrawingButton.Text = "This drawing";
+            UpdateLayersThisDrawingButton.ShowText = true;
+            UpdateLayersThisDrawingButton.CommandHandler = new MyCmdHandler();
+
+            Autodesk.Windows.RibbonButton UpdateLayersMultipleDrawingsButton = new RibbonButton();
+            UpdateLayersMultipleDrawingsButton.Text = "Multiple drawings";
+            UpdateLayersMultipleDrawingsButton.ShowText = true;
+            UpdateLayersMultipleDrawingsButton.CommandHandler = new MyCmdHandler();
+
+            Autodesk.Windows.RibbonButton addLayerFromThisDrawingButton = new RibbonButton();
+            addLayerFromThisDrawingButton.Text = "Select layer this drawing";
+            addLayerFromThisDrawingButton.ShowText = true;
+            addLayerFromThisDrawingButton.CommandHandler = new MyCmdHandler();
+
+            Autodesk.Windows.RibbonButton addLayerFromXrefButton = new RibbonButton();
+            addLayerFromXrefButton.Text = "Select layer xref";
+            addLayerFromXrefButton.ShowText = true;
+            addLayerFromXrefButton.CommandHandler = new MyCmdHandler();
+
+            Autodesk.Windows.RibbonButton editLayerConfigButton = new RibbonButton();
+            editLayerConfigButton.Text = "Edit layer config";
+            editLayerConfigButton.ShowText = true;
+            editLayerConfigButton.CommandHandler = new MyCmdHandler();
+
+            #endregion
 
             #region Drawing management buttons
 
@@ -96,16 +124,6 @@ namespace MyRibbonTab
             PurgeButton.Text = "Purge multiple drawings";
             PurgeButton.ShowText = true;
             PurgeButton.CommandHandler = new MyCmdHandler();
-
-            Autodesk.Windows.RibbonButton UpdateLayersMultipleDrawingsButton = new RibbonButton();
-            UpdateLayersMultipleDrawingsButton.Text = "This drawing";
-            UpdateLayersMultipleDrawingsButton.ShowText = true;
-            UpdateLayersMultipleDrawingsButton.CommandHandler = new MyCmdHandler();
-
-            Autodesk.Windows.RibbonButton UpdateLayersThisDrawingButton = new RibbonButton();
-            UpdateLayersThisDrawingButton.Text = "Multiple drawings";
-            UpdateLayersThisDrawingButton.ShowText = true;
-            UpdateLayersThisDrawingButton.CommandHandler = new MyCmdHandler();
 
             RibbonButton ChangeAttributeValueButton = new RibbonButton();
             ChangeAttributeValueButton.Text = "Change attribute value";
@@ -129,6 +147,7 @@ namespace MyRibbonTab
             LayerUpdateLabel.Text = "Update layers in:";
 
             RibbonRowPanel DrawingMaintenanceRowPanel = new RibbonRowPanel();
+            RibbonRowPanel LayerUpdateRowPanel = new RibbonRowPanel();
 
             DrawingMaintenanceRowPanel.Items.Add(PurgeButton);
             DrawingMaintenanceRowPanel.Items.Add(new RibbonRowBreak());
@@ -141,9 +160,17 @@ namespace MyRibbonTab
             LayerUpdateSplitButton.Items.Add(UpdateLayersMultipleDrawingsButton);
             LayerUpdateSplitButton.Items.Add(UpdateLayersThisDrawingButton);
 
+            LayerUpdateRowPanel.Items.Add(LayerUpdateLabel);
+            LayerUpdateRowPanel.Items.Add(LayerUpdateSplitButton);
+            LayerUpdateRowPanel.Items.Add(new RibbonRowBreak());
+            LayerUpdateRowPanel.Items.Add(addLayerFromThisDrawingButton);
+            LayerUpdateRowPanel.Items.Add(new RibbonRowBreak());
+            LayerUpdateRowPanel.Items.Add(addLayerFromXrefButton);
+            LayerUpdateRowPanel.Items.Add(new RibbonRowBreak());
+            LayerUpdateRowPanel.Items.Add(editLayerConfigButton);
+
             xRefPanel.Items.Add(XrefSplitButton);
-            LayerUpdatePanel.Items.Add(LayerUpdateLabel);
-            LayerUpdatePanel.Items.Add(LayerUpdateSplitButton);
+            LayerUpdatePanel.Items.Add(LayerUpdateRowPanel);
             DrawingMaintenancePanel.Items.Add(DrawingMaintenanceRowPanel);
 
             Tab.IsActive = true;
@@ -192,6 +219,15 @@ namespace MyRibbonTab
                             break;
                         case ("Change attribute value"):
                             MC.ChangeAttribute_dialog();
+                            break;
+                        case ("Select layer this drawing"):
+                            MC.AddLayerThisDrawing();
+                            break;
+                        case ("Select layer xref"):
+                            MC.AddLayerXref();
+                            break;
+                        case ("Edit layer config"):
+                            MC.EditLayerConfig();
                             break;
                         default:
                             break;

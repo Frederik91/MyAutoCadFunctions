@@ -9,7 +9,7 @@ using XrefManager.Models;
 
 namespace XrefManager.Workers
 {
-    class WriteXml
+    public class WriteXml
     {
         public void writeProjectXml(List<ProjectData> projectDataList)
         {
@@ -32,6 +32,23 @@ namespace XrefManager.Workers
             }
 
             return root;
+        }
+
+        public void UpdateConfigPath(string newPath)
+        {
+            var doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            var reader = new ReadXml();
+            var projectDataList = reader.readProjectXml();
+            var locateProjectFile = new LocateFileProject();
+
+            foreach (var project in projectDataList)
+            {
+                if (locateProjectFile.FileExists(project.RootPath, doc.Name))
+                {
+                    project.ConfigPath = newPath;
+                }
+            }
+            writeProjectXml(projectDataList);
         }
     }
 }

@@ -1,16 +1,10 @@
 ﻿using LayerConfigEditor;
-using LayerConfigEditor.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using XrefManager.Functions;
 using XrefManager.Models;
+using XrefManager.Workers;
 
 namespace XrefManager.Forms
 {
@@ -70,18 +64,11 @@ namespace XrefManager.Forms
 
         private void openConfigTool_button_Click(object sender, EventArgs e)
         {
-            var configTool = new MainWindow();
-            configTool.MainViewModel.configFilePath = configPath;
-            configTool.ShowDialog();
+            var openConfigTool = new OpenConfigTool();
+            openConfigTool.openConfigTool();
 
-            var configToolVM = configTool.MainViewModel;
-
-            if (configToolVM.configSelected)
-            {
-                configPath = configToolVM.configFilePath;
-            }
-
-
+            var locateConfigPath = new LocateFileProject();
+            configPath = locateConfigPath.returnConfigFilePath();          
         }
     }
 }

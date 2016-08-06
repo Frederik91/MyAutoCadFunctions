@@ -1,20 +1,19 @@
 ﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
-using Microsoft.VisualBasic.CompilerServices;
+using LayerConfigEditor.Models;
+using LayerConfigEditor.Workers;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XrefManager.Workers;
 
 namespace XrefManager
 {
     public class LayerUpdate
     {
-        private List<LayerProperties> propertyList = new List<LayerProperties>();
+        private List<LayerFilter> propertyList = new List<LayerFilter>();
         private int layersModified = 0;
         private int totalLayers = 0;
         private List<string> successfullDrawings = new List<string>();
@@ -23,22 +22,12 @@ namespace XrefManager
 
         public void UpdateLayersThisDrawing()
         {
-            var doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
-
-            var reader = new ReadXml();
-            var projectDataList = reader.readProjectXml();
             string configPath = string.Empty;
             var projectLocator = new LocateFileProject();
 
-            foreach (var project in projectDataList)
-            {
-                if (projectLocator.FileExists(project.RootPath, doc.Name))
-                {
-                    configPath = project.ConfigPath;
-                }
-            }
+            configPath = projectLocator.returnConfigFilePath();
 
-            if (string.IsNullOrEmpty(configPath) || !File.Exists(configPath))
+            if (string.IsNullOrEmpty(configPath))
             {
                 var res = System.Windows.Forms.MessageBox.Show("Drawing is not connected to a project. Do you want to create a new project?", "Drawing not connected to project", System.Windows.Forms.MessageBoxButtons.YesNo);
                 if (res == System.Windows.Forms.DialogResult.Yes)
@@ -48,7 +37,9 @@ namespace XrefManager
                 return;
             }
 
-            propertyList = ReadLayerPropertyFile(configPath);
+            var reader = new ConfigFileReader();
+
+            propertyList = reader.readConfigFile(configPath);
 
             Document document = Application.DocumentManager.MdiActiveDocument;
 
@@ -66,14 +57,16 @@ namespace XrefManager
                 {
                     return;
                 }
-                propertyList = ReadLayerPropertyFile(form.configPath);
+
+                var configFileReader = new ConfigFileReader();
+                propertyList = configFileReader.readConfigFile(form.configPath);
                 drawingList = form.DrawingList;
             }
 
             ChangeLayersOnDrawings(propertyList, drawingList);
         }
 
-        public void ChangeLayersOnDrawings(List<LayerProperties> propList, List<string> drawingList)
+        public void ChangeLayersOnDrawings(List<LayerFilter> propList, List<string> drawingList)
         {
             Document Doc = Application.DocumentManager.MdiActiveDocument;
             var totalDrawings = drawingList.Count;
@@ -95,67 +88,6 @@ namespace XrefManager
             }
 
             Doc.Editor.WriteMessage("\nModified " + layersModified + " out of " + totalLayers + " layers on " + successfullDrawings.Count + " out of " + totalDrawings + " drawings");
-        }
-
-        public List<LayerProperties> ReadLayerPropertyFile(string filePath)
-        {
-            var layerPropertyList = new List<LayerProperties>();
-
-
-            var reader = new StreamReader(filePath, Encoding.GetEncoding("iso-8859-1"));
-
-            while (!reader.EndOfStream)
-            {
-                var lineArray = reader.ReadLine().Split('\t').ToList();
-
-                var freezeBool = false;
-                var thawBool = false;
-                var layerOnBool = false;
-                var layerOffBool = false;
-
-                for (int i = lineArray.Count() - 1; i < 5; i++)
-                {
-                    lineArray.Add("");
-                }
-
-
-                if (!string.IsNullOrEmpty(lineArray[1]))
-                {
-                    freezeBool = true;
-                }
-
-                if (!string.IsNullOrEmpty(lineArray[2]))
-                {
-                    thawBool = true;
-                }
-
-                if (!string.IsNullOrEmpty(lineArray[4]))
-                {
-                    layerOnBool = true;
-                }
-
-                if (!string.IsNullOrEmpty(lineArray[5]))
-                {
-                    layerOffBool = true;
-                }
-
-                //var correctedLayerName = lineArray[0].Replace(" ", "*");
-
-                layerPropertyList.Add(new LayerProperties
-                {
-                    Name = lineArray[0],
-                    freeze = freezeBool,
-                    thaw = thawBool,
-                    Color = lineArray[3],
-                    layerOn = layerOnBool,
-                    layerOff = layerOffBool
-                });
-            }
-
-
-            layerPropertyList.RemoveAt(0);
-
-            return layerPropertyList;
         }
 
         private void ModifyOpenDrawing(Document document)
@@ -256,13 +188,13 @@ namespace XrefManager
             return fileDiag.FileNames.ToList();
         }
 
-        private void modifyLayer(LayerTableRecord Layer, List<LayerProperties> propertyList)
+        private void modifyLayer(LayerTableRecord Layer, List<LayerFilter> propertyList)
         {
             totalLayers++;
             var layerModified = false;
             foreach (var property in propertyList)
             {
-                if (LayerComparer.IsLike(property.Name, Layer.Name))
+                if (LayerComparer.IsLike(property.LayerName, Layer.Name))
                 {
                     if (!string.IsNullOrEmpty(property.Color))
                     {
@@ -275,25 +207,25 @@ namespace XrefManager
                         }
                     }
 
-                    if (property.freeze && !Layer.IsFrozen)
+                    if (property.Freeze && !Layer.IsFrozen)
                     {
                         Layer.IsFrozen = true;
                         layerModified = true;
                     }
 
-                    if (property.thaw && Layer.IsFrozen)
+                    if (property.Thaw && Layer.IsFrozen)
                     {
                         Layer.IsFrozen = false;
                         layerModified = true;
                     }
 
-                    if (property.layerOff && !Layer.IsOff)
+                    if (property.LayerOff && !Layer.IsOff)
                     {
                         Layer.IsOff = true;
                         layerModified = true;
                     }
 
-                    if (property.layerOn && Layer.IsOff)
+                    if (property.LayerOn && Layer.IsOff)
                     {
                         Layer.IsOff = false;
                         layerModified = true;

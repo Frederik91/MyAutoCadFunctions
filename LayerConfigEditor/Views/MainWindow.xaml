@@ -21,7 +21,7 @@
                 <MenuItem Header="Save As..." Command="{Binding SaveAsConfigCommand}"/>
                 <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
             </MenuItem>
-            <MenuItem  HorizontalAlignment="Right" Header="Select current config file" Command="{Binding ConfigFileSelectedCommand}"/>
+            <MenuItem  HorizontalAlignment="Right" Header="Done" Command="{Binding ConfigFileSelectedCommand}"/>
         </Menu>
         <DataGrid Grid.Row="1" ItemsSource="{Binding LayerFilterList}" CanUserAddRows="true"/>
     </Grid>

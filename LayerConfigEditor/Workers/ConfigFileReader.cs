@@ -24,6 +24,7 @@ namespace LayerConfigEditor.Workers
                 }
             }
 
+            reader.Close();
             return layerFilterList;
         }
 

@@ -14,6 +14,8 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Colors;
 using XrefManager.Forms;
 using XrefManager.Workers;
+using LayerConfigEditor.Workers;
+using XrefManager.Functions;
 
 namespace XrefManager
 {
@@ -31,6 +33,27 @@ namespace XrefManager
         public void Ribb()
         {
             rb.RibbonSplitButton();
+        }
+
+        [CommandMethod("EditLayerConfig", CommandFlags.Session)]
+        public void EditLayerConfig()
+        {
+            var openConfigTool = new OpenConfigTool();
+            openConfigTool.openConfigTool();
+        }
+
+        [CommandMethod("AddLayerThisDrawing", CommandFlags.Session)]
+        public void AddLayerThisDrawing()
+        {
+            var getLayerFromObject = new GetLayerFromObject();
+            getLayerFromObject.SelectObjectReturnLayer();
+        }
+
+        [CommandMethod("AddLayerXref", CommandFlags.Session)]
+        public void AddLayerXref()
+        {
+            var getLayerFromObject = new GetLayerFromObject();
+            getLayerFromObject.SelectXrefObjectReturnLayer();
         }
 
         [CommandMethod("AddXref", CommandFlags.Session)]
@@ -65,10 +88,11 @@ namespace XrefManager
                 ed.WriteMessage("No string was provided\n");
                 return;
             }
-            var LU = new LayerUpdate();
-            var propertyList = LU.ReadLayerPropertyFile(prConfigPath.StringResult);
+            var reader = new ConfigFileReader();
+            var propertyList = reader.readConfigFile(prConfigPath.StringResult);
 
             var AX = new AddXref();
+            var LU = new LayerUpdate();
             var drawingList = AX.addXrefSpecialized();
             if (drawingList != null)
             {

@@ -133,8 +133,9 @@
     <Compile Include="Forms\UpdateLayerForm.Designer.cs">
       <DependentUpon>UpdateLayerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Functions\LayerProperties.cs" />
+    <Compile Include="Functions\GetLayerFromObject.cs" />
     <Compile Include="Functions\LayerUpdate.cs" />
+    <Compile Include="Functions\OpenConfigTool.cs" />
     <Compile Include="MainClass.cs" />
     <Compile Include="Functions\LayerComparer.cs" />
     <Compile Include="Models\ProjectData.cs" />
@@ -170,6 +171,10 @@
     <ProjectReference Include="..\LayerConfigEditor\LayerConfigEditor.csproj">
       <Project>{F3171BB5-555C-4482-95AD-2A56932DC750}</Project>
       <Name>LayerConfigEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LayerFilterFromSelectedObjectWindow\LayerFilterFromSelectedObjectWindow.csproj">
+      <Project>{72c421ee-51bd-4f0e-9b6f-f27d10148198}</Project>
+      <Name>LayerFilterFromSelectedObjectWindow</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

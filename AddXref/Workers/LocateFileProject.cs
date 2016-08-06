@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace XrefManager.Workers
 {
@@ -22,5 +17,28 @@ namespace XrefManager.Workers
             }
             return false;
         }
+
+        public string returnConfigFilePath()
+        {
+            var doc = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager.MdiActiveDocument;
+            var configPath = string.Empty;
+            var reader = new ReadXml();
+            var projectDataList = reader.readProjectXml();
+
+            foreach (var project in projectDataList)
+            {
+                if (FileExists(project.RootPath, doc.Name))
+                {
+                    configPath = project.ConfigPath;
+                }
+            }
+
+            if (string.IsNullOrEmpty(configPath) || !File.Exists(configPath))
+            {
+               configPath = string.Empty;
+            }
+            return configPath;
+        }
+       
     }
 }

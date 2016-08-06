@@ -5,8 +5,6 @@ using LayerConfigEditor.Workers;
 using Microsoft.Win32;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows;
-using System.Windows.Input;
 
 namespace LayerConfigEditor.ViewModel
 {
@@ -35,8 +33,7 @@ namespace LayerConfigEditor.ViewModel
 
             if (File.Exists(configFilePath))
             {
-                var reader = new ConfigFileReader();
-                LayerFilterList = reader.readConfigFile(configFilePath);
+                ReloadConfig();
             }
 
             NewConfigCommand = new RelayCommand(NewConfig);
@@ -58,6 +55,12 @@ namespace LayerConfigEditor.ViewModel
         {
             LayerFilterList = new List<LayerFilter>();
             configFilePath = string.Empty;
+        }
+
+        public void ReloadConfig()
+        {
+            var reader = new ConfigFileReader();
+            LayerFilterList = reader.readConfigFile(configFilePath);
         }
 
         private void OpenConfig()
