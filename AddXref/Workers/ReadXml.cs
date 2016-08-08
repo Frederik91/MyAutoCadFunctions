@@ -105,8 +105,15 @@ namespace XrefManager.Workers
             var fileName = browser.SelectedPath + "\\Projects.xml";
             var file = File.Create(fileName);
             file.Close();
+
             appSettings.ProjectsXmlPath = fileName;
             appSettings.Save();
+
+            var writer = new WriteXml();
+            var projectDataList = new List<ProjectData>();
+            projectDataList.Add(new ProjectData { ProjectName = "New Project" });
+            writer.writeProjectXml(projectDataList);
+
             return true;
         }
 
@@ -114,16 +121,18 @@ namespace XrefManager.Workers
         {
             var res = System.Windows.Forms.DialogResult.Yes;
             var dialog = new OpenFileDialog();
+            dialog.CheckFileExists = true;
+            dialog.Filter = "XML File | *.xml";
+            dialog.ShowDialog();
 
-            while (!dialog.CheckFileExists || res == System.Windows.Forms.DialogResult.Yes)
+            while (!File.Exists(dialog.FileName) && res == System.Windows.Forms.DialogResult.Yes)
             {
-                dialog.Filter = "XML File | *.xml";
-                dialog.ShowDialog();
                 res = System.Windows.Forms.MessageBox.Show("Selected file is invalid, do you want to specify a new one?", "Error", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question);
                 if (res == System.Windows.Forms.DialogResult.No)
                 {
                     return false;
                 }
+                dialog.ShowDialog();
             }
 
             appSettings.ProjectsXmlPath = dialog.FileName;
