@@ -1,21 +1,26 @@
-﻿using XrefManager.Workers;
+﻿using LayerConfigEditor.Workers;
+using XrefManager.Workers;
 
 namespace XrefManager.Functions
 {
     public class OpenConfigTool
     {
+        public string configPath { get; set; }
+
         public void openConfigTool()
         {
             var locateProjectFile = new LocateFileProject();
-            var configFilePath = locateProjectFile.returnConfigFilePath();
+            configPath = locateProjectFile.returnConfigFilePath();
 
-            if (string.IsNullOrEmpty(configFilePath))
+
+
+            if (string.IsNullOrEmpty(configPath))
             {
                 System.Windows.Forms.MessageBox.Show("Drawing is not connected to a project.");
             }
 
             var configTool = new LayerConfigEditor.MainWindow();
-            configTool.MainViewModel.configFilePath = configFilePath;
+            configTool.MainViewModel.configFilePath = configPath;
             configTool.MainViewModel.ReloadConfig();
             configTool.ShowDialog();
 
@@ -23,10 +28,17 @@ namespace XrefManager.Functions
 
             if (configToolVM.configSelected)
             {
+                configPath = configToolVM.configFilePath;
+
                 var writer = new WriteXml();
-                writer.UpdateConfigPath(configToolVM.configFilePath);
+                writer.UpdateConfigPath(configPath);
+
+                var configWriter = new ConfigFileWriter();
+
+                configWriter.writeConfig(configPath, configToolVM.LayerFilterList);
+
             }
-            return;
+            
         }
 
 

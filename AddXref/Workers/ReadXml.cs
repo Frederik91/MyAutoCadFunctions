@@ -13,17 +13,18 @@ namespace XrefManager.Workers
 {
     public class ReadXml
     {
+        private AppSettings appSettings = AppSettings.Default;
+
         public List<ProjectData> readProjectXml()
         {
             var projectDataList = new List<ProjectData>();
-            var settings = AppSettings.Default;
             var xmlReader = new ReadXml();
 
             if (xmlReader.checkXmlPath())
             {
                 try
                 {
-                    var xEle  = XElement.Load(settings.ProjectsXmlPath);
+                    var xEle  = XElement.Load(appSettings.ProjectsXmlPath);
 
                     foreach (var xProj in xEle.Elements("Project"))
                     {
@@ -45,8 +46,6 @@ namespace XrefManager.Workers
         }
         public bool checkXmlPath()
         {
-            var appSettings = AppSettings.Default;
-
             var createNewProjectFile = false;
 
             if (File.Exists(appSettings.ProjectsXmlPath))
@@ -61,9 +60,9 @@ namespace XrefManager.Workers
                     switch (res)
                     {
                         case (System.Windows.Forms.DialogResult.Yes):
-                            return browseNewFileFolder(appSettings);
+                            return browseNewFileFolder();
                         case (System.Windows.Forms.DialogResult.No):
-                            return selectExistingProjectFile(appSettings);
+                            return selectExistingProjectFile();
                     }
                 }
             }
@@ -71,14 +70,14 @@ namespace XrefManager.Workers
             switch (createNewProjectFile)
             {
                 case (true):
-                    return browseNewFileFolder(appSettings);
+                    return browseNewFileFolder();
                 case (false):
-                    return selectExistingProjectFile(appSettings);
+                    return selectExistingProjectFile();
             }
             return false;
 
         }
-        private bool browseNewFileFolder(AppSettings appSettings)
+        private bool browseNewFileFolder()
         {
             var res = System.Windows.Forms.DialogResult.Yes;
             var browser = new System.Windows.Forms.FolderBrowserDialog();
@@ -111,7 +110,7 @@ namespace XrefManager.Workers
             return true;
         }
 
-        private bool selectExistingProjectFile(AppSettings appSettings)
+        private bool selectExistingProjectFile()
         {
             var res = System.Windows.Forms.DialogResult.Yes;
             var dialog = new OpenFileDialog();

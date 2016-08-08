@@ -66,9 +66,7 @@ namespace XrefManager.Forms
         {
             var openConfigTool = new OpenConfigTool();
             openConfigTool.openConfigTool();
-
-            var locateConfigPath = new LocateFileProject();
-            configPath = locateConfigPath.returnConfigFilePath();          
+            configPath = openConfigTool.configPath;          
         }
     }
 }

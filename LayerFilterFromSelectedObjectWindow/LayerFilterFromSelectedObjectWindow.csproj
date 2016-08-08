@@ -119,10 +119,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AddXref\XrefManager.csproj">
-      <Project>{b605ae21-a1e2-4fec-9d03-96d373a30ff8}</Project>
-      <Name>XrefManager</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LayerConfigEditor\LayerConfigEditor.csproj">
       <Project>{f3171bb5-555c-4482-95ad-2a56932dc750}</Project>
       <Name>LayerConfigEditor</Name>

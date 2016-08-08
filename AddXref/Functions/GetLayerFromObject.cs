@@ -1,8 +1,10 @@
 ﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
+using LayerConfigEditor.Workers;
 using LayerFilterFromSelectedObjectWindow;
 using System.IO;
+using XrefManager.Workers;
 
 namespace XrefManager.Functions
 {
@@ -15,7 +17,52 @@ namespace XrefManager.Functions
                 var window = new MainWindow();
                 window.MainViewModel.MapLayerStringToLayerFilter(layer);
                 window.ShowDialog();
+
+                if (window.MainViewModel.addLayerFilter)
+                {
+                    var projectFileLocator = new LocateFileProject();
+                    var configFilePath = projectFileLocator.returnConfigFilePath();
+
+                    if (string.IsNullOrEmpty(configFilePath))
+                    {
+                        configFilePath = connectDrawingToConfigFile(configFilePath);
+                        if (string.IsNullOrEmpty(configFilePath))
+                        {
+                            return;
+                        }
+                    }
+
+                    var reader = new ConfigFileReader();
+                    var writer = new ConfigFileWriter();
+
+                    var layerFilterList = reader.readConfigFile(configFilePath);
+
+                    foreach (var layerFilter in window.MainViewModel.NewLayerFilterList)
+                    {
+                        layerFilterList.Add(layerFilter);
+                    }
+
+                    writer.writeConfig(configFilePath, layerFilterList);
+                }
             }
+        }
+
+        private string connectDrawingToConfigFile(string configPath)
+        {
+            var res = System.Windows.Forms.MessageBox.Show("Drawing is not connected to a project. Do you want to create a new project?", "Drawing not connected to project", System.Windows.Forms.MessageBoxButtons.YesNo);
+            if (res == System.Windows.Forms.DialogResult.Yes)
+            {
+                using (var form = new XrefManager.Forms.UpdateLayerForm())
+                {
+                    form.ShowDialog();
+                    if (string.IsNullOrEmpty(form.configPath))
+                    {
+                        return null;
+                    }
+                    configPath = form.configPath;
+                }
+            }
+            return configPath;
         }
 
         public void SelectXrefObjectReturnLayer()
