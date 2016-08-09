@@ -11,7 +11,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <DataGrid ItemsSource="{Binding NewLayerFilterList}"/>
+        <DataGrid Name="LayerFilter_DataGrid" ItemsSource="{Binding NewLayerFilterList}">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                </Style>
+            </DataGrid.Resources>
+        </DataGrid>
         <Button Grid.Row="1" Command="{Binding AddLayersCommand}">Add to config file</Button>
     </Grid>
 </Window>

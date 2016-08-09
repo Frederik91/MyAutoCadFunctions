@@ -12,13 +12,6 @@ namespace XrefManager.Functions
             var locateProjectFile = new LocateFileProject();
             configPath = locateProjectFile.returnConfigFilePath();
 
-
-
-            if (string.IsNullOrEmpty(configPath))
-            {
-                System.Windows.Forms.MessageBox.Show("Drawing is not connected to a project.");
-            }
-
             var configTool = new LayerConfigEditor.MainWindow();
             configTool.MainViewModel.configFilePath = configPath;
             configTool.MainViewModel.ReloadConfig();

@@ -1,8 +1,8 @@
+using Autodesk.AutoCAD.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LayerConfigEditor.Models;
 using LayerConfigEditor.Workers;
-using Microsoft.Win32;
 using System.Collections.Generic;
 using System.IO;
 
@@ -12,7 +12,7 @@ namespace LayerConfigEditor.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private ViewModelBase m_currentViewModel;
-        private List<LayerFilter> m_layerFilterList;
+        private List<LayerFilter> m_layerFilterList = new List<LayerFilter>();
         private MainWindow mainWindow;
 
         public string configFilePath = string.Empty;
@@ -44,6 +44,16 @@ namespace LayerConfigEditor.ViewModel
             ConfigFileSelectedCommand = new RelayCommand(ConfigFileSelected);
         }
 
+        public void setColor(int index)
+        {
+            ColorDialog cd = new ColorDialog();
+            System.Windows.Forms.DialogResult dr = cd.ShowDialog();
+            if (dr == System.Windows.Forms.DialogResult.OK)
+            {
+                LayerFilterList[index].Color = cd.Color;                
+            }
+        }
+
         private void ConfigFileSelected()
         {
             configSelected = true;
@@ -65,7 +75,7 @@ namespace LayerConfigEditor.ViewModel
 
         private void OpenConfig()
         {
-            var dialog = new OpenFileDialog();
+            var dialog = new System.Windows.Forms.OpenFileDialog();
             dialog.DefaultExt = "Text files | *.txt";
             dialog.ShowDialog();
 
@@ -90,7 +100,7 @@ namespace LayerConfigEditor.ViewModel
 
         private void SaveAsConfig()
         {
-            var dialog = new SaveFileDialog();
+            var dialog = new System.Windows.Forms.SaveFileDialog();
             dialog.AddExtension = true;
             dialog.Filter = "Text files | *.txt";
             dialog.OverwritePrompt = true;

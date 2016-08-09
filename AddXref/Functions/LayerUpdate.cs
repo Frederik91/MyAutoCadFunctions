@@ -196,13 +196,11 @@ namespace XrefManager
             {
                 if (LayerComparer.IsLike(property.LayerName, Layer.Name))
                 {
-                    if (!string.IsNullOrEmpty(property.Color))
+                    if (property.Color != null)
                     {
-                        var acColor = Autodesk.AutoCAD.Colors.Color.FromColorIndex(Autodesk.AutoCAD.Colors.ColorMethod.ByAci, Convert.ToInt16(property.Color));
-
-                        if (Layer.Color != acColor)
+                        if (Layer.Color != property.Color)
                         {
-                            Layer.Color = acColor;
+                            Layer.Color = property.Color;
                             layerModified = true;
                         }
                     }
@@ -237,6 +235,11 @@ namespace XrefManager
             {
                 layersModified++;
             }
+        }
+
+        private short Color(string color)
+        {
+            throw new NotImplementedException();
         }
     }
 }

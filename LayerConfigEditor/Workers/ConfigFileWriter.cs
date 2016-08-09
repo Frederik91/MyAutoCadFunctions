@@ -28,7 +28,9 @@ namespace LayerConfigEditor.Workers
 
             using (var writer = new StreamWriter(File.Open(filePath, FileMode.CreateNew), Encoding.GetEncoding("iso-8859-1")))
             {
-                foreach (var row in layerFilterList)
+                var sortedLayerFilterList = layerFilterList.OrderByDescending(x => x.Priority).ToList();
+
+                foreach (var row in sortedLayerFilterList)
                 {
                     writer.WriteLine(mapper(row));
                 }
@@ -63,12 +65,27 @@ namespace LayerConfigEditor.Workers
                 layerOff = "x";
             }
 
-            return layerFilter.LayerName + "\t"
-                 + freeze + "\t"
-                 + thaw + "\t"
-                 + layerFilter.Color + "\t"
-                 + layerOn + "\t"
-                 + layerOff;
+            try
+            {
+                return layerFilter.LayerName + "\t"
+                     + freeze + "\t"
+                     + thaw + "\t"
+                     + layerFilter.Color.ColorIndex + "\t"
+                     + layerOn + "\t"
+                     + layerOff + "\t"
+                     + layerFilter.Priority;
+            }
+            catch (Exception)
+            {
+                return layerFilter.LayerName + "\t"
+                     + freeze + "\t"
+                     + thaw + "\t"
+                     + "" + "\t"
+                     + layerOn + "\t"
+                     + layerOff + "\t"
+                     + layerFilter.Priority;
+            }
+
         }
     }
 }

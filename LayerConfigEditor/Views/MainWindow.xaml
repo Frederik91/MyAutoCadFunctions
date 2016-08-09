@@ -23,7 +23,13 @@
             </MenuItem>
             <MenuItem  HorizontalAlignment="Right" Header="Done" Command="{Binding ConfigFileSelectedCommand}"/>
         </Menu>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding LayerFilterList}" CanUserAddRows="true"/>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding LayerFilterList}" CanUserAddRows="true" Name="LayerFilter_DataGrid">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                </Style>
+            </DataGrid.Resources>
+        </DataGrid>
     </Grid>
 
 </Window>

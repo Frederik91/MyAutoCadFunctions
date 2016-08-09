@@ -1,4 +1,5 @@
-﻿using LayerConfigEditor.Models;
+﻿using Autodesk.AutoCAD.Colors;
+using LayerConfigEditor.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,17 +15,21 @@ namespace LayerConfigEditor.Workers
         {
             var layerFilterList = new List<LayerFilter>();
 
-            var reader = new StreamReader(filePath);
-            while (!reader.EndOfStream)
+            if (File.Exists(filePath))
             {
-                var layerFilter = mapper(reader.ReadLine());
-                if (layerFilter != null)
+                var reader = new StreamReader(filePath);
+                while (!reader.EndOfStream)
                 {
-                    layerFilterList.Add(layerFilter);
+                    var layerFilter = mapper(reader.ReadLine());
+                    if (layerFilter != null)
+                    {
+                        layerFilterList.Add(layerFilter);
+                    }
                 }
+
+                reader.Close();
             }
 
-            reader.Close();
             return layerFilterList;
         }
 
@@ -69,13 +74,15 @@ namespace LayerConfigEditor.Workers
 
             if (lineArray.Length >= 4)
             {
-                if (!string.IsNullOrEmpty(lineArray[3]))
+                short s;
+
+                if (short.TryParse(lineArray[3], out s))
                 {
-                    layerFilter.Color = lineArray[3];
+                    layerFilter.Color = Color.FromColorIndex(ColorMethod.ByAci, s);
                 }
                 else
                 {
-                    layerFilter.Color = string.Empty;
+                    layerFilter.Color = null;
                 }
             }
 
@@ -101,6 +108,15 @@ namespace LayerConfigEditor.Workers
                 {
                     layerFilter.LayerOff = false;
                 }
+            }
+
+            if (lineArray.Length >= 7)
+            {
+                try
+                {
+                    layerFilter.Priority = Convert.ToInt32(lineArray[6]);
+                }
+                catch (Exception) { }                
             }
 
             return layerFilter;
