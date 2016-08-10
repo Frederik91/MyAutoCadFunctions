@@ -6,7 +6,9 @@ namespace XrefManager.Workers
     {
         public bool FileExists(string rootpath, string filename)
         {
-            var replaceString = @"\\cowi.net\projects";
+            var replaceString = @"\\cowi.net\projects".ToUpper();
+            rootpath = rootpath.ToUpper();
+            filename = filename.ToUpper();
 
             var adjustedFilename = filename.Replace(replaceString, "O:");
             var adjustedRootpath = rootpath.Replace(replaceString, "O:");

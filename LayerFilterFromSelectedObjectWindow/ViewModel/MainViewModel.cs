@@ -34,7 +34,7 @@ namespace LayerFilterFromSelectedObjectWindow.ViewModel
 
         public void MapLayerStringToLayerFilter(string layerName)
         {
-            NewLayerFilterList.Add(new LayerFilter { LayerName = layerName });
+            NewLayerFilterList.Add(new LayerFilter { LayerName = layerName, Priority = 1 });
         }
 
         private void addLayerFiltersToConfigFile()

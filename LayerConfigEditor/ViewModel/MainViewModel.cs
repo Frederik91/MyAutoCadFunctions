@@ -5,6 +5,7 @@ using LayerConfigEditor.Models;
 using LayerConfigEditor.Workers;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace LayerConfigEditor.ViewModel
 {
@@ -95,6 +96,9 @@ namespace LayerConfigEditor.ViewModel
             }
 
             var configWriter = new ConfigFileWriter();
+
+            LayerFilterList = LayerFilterList.GroupBy(x => x.LayerName).Select(x => x.First()).ToList();
+
             configWriter.writeConfig(configFilePath, LayerFilterList);
         }
 
@@ -110,8 +114,7 @@ namespace LayerConfigEditor.ViewModel
             {
                 configFilePath = dialog.FileName;
 
-                var configWriter = new ConfigFileWriter();
-                configWriter.writeConfig(configFilePath, LayerFilterList);
+                SaveConfig();
             }
         }
 

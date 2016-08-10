@@ -192,41 +192,55 @@ namespace XrefManager
         {
             totalLayers++;
             var layerModified = false;
-            foreach (var property in propertyList)
+            var PriorityList = new List<List<LayerFilter>>();
+
+            var priorities = propertyList.Select(x => x.Priority).Distinct().ToList();
+            priorities = priorities.OrderBy(x => x).ToList();
+
+            foreach (var priority in priorities)
             {
-                if (LayerComparer.IsLike(property.LayerName, Layer.Name))
+                PriorityList.Add(propertyList.Where(x => x.Priority == priority).ToList());
+            }
+
+            var sortedPropertyList = propertyList.OrderBy(x => x.Priority).ToList();
+            foreach (var propList in PriorityList)
+            {
+                foreach (var property in propList)
                 {
-                    if (property.Color != null)
+                    if (LayerComparer.IsLike(property.LayerName, Layer.Name))
                     {
-                        if (Layer.Color != property.Color)
+                        if (property.Color != null)
                         {
-                            Layer.Color = property.Color;
+                            if (Layer.Color != property.Color)
+                            {
+                                Layer.Color = property.Color;
+                                layerModified = true;
+                            }
+                        }
+
+                        if (property.Freeze && !Layer.IsFrozen)
+                        {
+                            Layer.IsFrozen = true;
                             layerModified = true;
                         }
-                    }
 
-                    if (property.Freeze && !Layer.IsFrozen)
-                    {
-                        Layer.IsFrozen = true;
-                        layerModified = true;
-                    }
+                        if (property.Thaw && Layer.IsFrozen)
+                        {
+                            Layer.IsFrozen = false;
+                            layerModified = true;
+                        }
 
-                    if (property.Thaw && Layer.IsFrozen)
-                    {
-                        Layer.IsFrozen = false;
-                        layerModified = true;
-                    }
+                        if (property.LayerOff && !Layer.IsOff)
+                        {
+                            Layer.IsOff = true;
+                            layerModified = true;
+                        }
 
-                    if (property.LayerOff && !Layer.IsOff)
-                    {
-                        Layer.IsOff = true;
-                        layerModified = true;
-                    }
-
-                    if (property.LayerOn && Layer.IsOff)
-                    {
-                        Layer.IsOff = false;
-                        layerModified = true;
+                        if (property.LayerOn && Layer.IsOff)
+                        {
+                            Layer.IsOff = false;
+                            layerModified = true;
+                        }
                     }
                 }
             }
