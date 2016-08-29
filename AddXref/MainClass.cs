@@ -27,7 +27,14 @@ namespace XrefManager
         {
         }
 
-       
+
+
+        [CommandMethod("CVIEW", CommandFlags.Session)]
+        public void OneVportTopDown()
+        {
+            var EV = new EditView();
+            EV.SetTopView();
+        }
 
         [CommandMethod("Ribb", CommandFlags.Session)]
         public void Ribb()

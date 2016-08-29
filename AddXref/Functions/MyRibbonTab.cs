@@ -65,6 +65,13 @@ namespace MyRibbonTab
             DrawingMaintenancePane.Source = DrawingMaintenancePanel;
             Tab.Panels.Add(DrawingMaintenancePane);
 
+            Autodesk.Windows.RibbonPanelSource ViewPanel = new RibbonPanelSource();
+            ViewPanel.Title = "View";
+
+            RibbonPanel ViewPane = new RibbonPanel();
+            ViewPane.Source = ViewPanel;
+            Tab.Panels.Add(ViewPane);
+
             //////////////////////////////////////////////////
             // create the buttons listed in the split button
 
@@ -132,6 +139,15 @@ namespace MyRibbonTab
 
             #endregion
 
+            #region View Buttons
+
+            Autodesk.Windows.RibbonButton TopDownButton = new RibbonButton();
+            TopDownButton.Text = "Top Down";
+            TopDownButton.ShowText = true;
+            TopDownButton.CommandHandler = new MyCmdHandler();
+
+            #endregion 
+
             ////////////////////////
             // create split buttons
             RibbonSplitButton XrefSplitButton = new RibbonSplitButton();
@@ -157,8 +173,8 @@ namespace MyRibbonTab
             XrefSplitButton.Items.Add(xrefButton2);
             XrefSplitButton.Items.Add(xrefButton3);
 
-            LayerUpdateSplitButton.Items.Add(UpdateLayersMultipleDrawingsButton);
             LayerUpdateSplitButton.Items.Add(UpdateLayersThisDrawingButton);
+            LayerUpdateSplitButton.Items.Add(UpdateLayersMultipleDrawingsButton);
 
             LayerUpdateRowPanel.Items.Add(LayerUpdateLabel);
             LayerUpdateRowPanel.Items.Add(LayerUpdateSplitButton);
@@ -168,6 +184,8 @@ namespace MyRibbonTab
             LayerUpdateRowPanel.Items.Add(addLayerFromXrefButton);
             LayerUpdateRowPanel.Items.Add(new RibbonRowBreak());
             LayerUpdateRowPanel.Items.Add(editLayerConfigButton);
+
+            ViewPanel.Items.Add(TopDownButton);
 
             xRefPanel.Items.Add(XrefSplitButton);
             LayerUpdatePanel.Items.Add(LayerUpdateRowPanel);
@@ -228,6 +246,9 @@ namespace MyRibbonTab
                             break;
                         case ("Edit layer config"):
                             MC.EditLayerConfig();
+                            break;
+                        case ("Top Down"):
+                            MC.OneVportTopDown();
                             break;
                         default:
                             break;

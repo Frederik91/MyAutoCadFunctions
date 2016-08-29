@@ -167,6 +167,7 @@
     <Compile Include="Forms\UpdateLayerForm.Designer.cs">
       <DependentUpon>UpdateLayerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Functions\EditView.cs" />
     <Compile Include="Functions\GetLayerFromObject.cs" />
     <Compile Include="Functions\LayerUpdate.cs" />
     <Compile Include="Functions\OpenConfigTool.cs" />
