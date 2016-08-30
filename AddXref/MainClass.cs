@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
-using Autodesk.Windows;
-using Autodesk.AutoCAD.DatabaseServices;
-using Microsoft.Win32;
-using System.IO;
 using Autodesk.AutoCAD.EditorInput;
-using Autodesk.AutoCAD.Geometry;
-using Autodesk.AutoCAD.Colors;
 using XrefManager.Forms;
 using XrefManager.Workers;
 using LayerConfigEditor.Workers;
@@ -26,8 +16,6 @@ namespace XrefManager
         public MainClass()
         {
         }
-
-
 
         [CommandMethod("CVIEW", CommandFlags.Session)]
         public void OneVportTopDown()
