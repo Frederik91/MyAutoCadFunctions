@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using XrefManager.Models;
 
 namespace XrefManager.Forms
 {
@@ -14,6 +15,7 @@ namespace XrefManager.Forms
     {
         public List<string> purgeDrawingList { get; set; }
         public List<string> attributeDrawingList { get; set; }
+        public BlockData blockData { get; set; }
 
         AppSettings attSettings = AppSettings.Default;
 
@@ -26,6 +28,8 @@ namespace XrefManager.Forms
             attAttributeName = attSettings.AttributeName;
             attOldValue = attSettings.OldValue;
             attNewValue = attSettings.NewValue;
+
+            blockData = new BlockData();
         }
 
         private void PurgeBrowse_button_Click(object sender, EventArgs e)
@@ -105,6 +109,35 @@ namespace XrefManager.Forms
             var UX = new UnloadXref();
             attributeDrawingList = UX.getDrawingList();
             attributeDrawingList_listBox.DataSource = attributeDrawingList;
+        }
+
+        private void SelectBlock_button_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Attributes_comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            attAttributeName = blockData.AttNameAndvalue[Attributes_comboBox.SelectedIndex].attName;
+            attOldValue = blockData.AttNameAndvalue[Attributes_comboBox.SelectedIndex].attValue;
+        }
+
+        public void setValueFromInput()
+        {
+            attBlockname = blockData.BlockName;
+
+            var attributeNames = new List<string>();
+
+            foreach (var att in blockData.AttNameAndvalue)
+            {
+                Attributes_comboBox.Items.Add(att.attName);
+            }
+        }
+
+        private void SelectBlock_button_Click_1(object sender, EventArgs e)
+        {
+            var RV = new ReplaceValue();
+            RV.getBlockData(this);
         }
     }
 }

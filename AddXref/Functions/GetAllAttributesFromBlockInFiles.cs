@@ -1,58 +1,55 @@
 ﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XrefManager.Forms;
 using XrefManager.Models;
-using XrefManager.Workers;
 
-namespace XrefManager
+namespace XrefManager.Functions
 {
-    public class ReplaceValue
+    public class GetAllAttributesFromBlockInFiles
     {
-        public void openDialogeBox()
+        private List<BlockData> blockDataList = new List<BlockData>();
+        private string blockName = "";
+        private string outputFileLocation = "";
+
+        public void getAllAttributes()
         {
-            var xmlReader = new ReadXml();
+            blockName = getBlockName();
 
-            if (xmlReader.checkXmlPath())
+            if (string.IsNullOrEmpty(blockName))
             {
-                var drawingList = new List<string>();
-
-                using (var _form = new PurgeAttributeForm())
-                {
-                    _form.SetTabIndex(1);
-
-                    var result = _form.ShowDialog();
-
-                    if (result == System.Windows.Forms.DialogResult.OK)
-                    {
-                        drawingList = _form.attributeDrawingList;
-                    }
-                    if (result == System.Windows.Forms.DialogResult.None)
-                    {
-                        return;
-                    }
-
-                    ReplaceStringValue(drawingList, _form.attBlockname, _form.attAttributeName, _form.attOldValue, _form.attNewValue);
-
-                }
+                return;
             }
+
+            var drawingList = SelectDrawings();
+            if (drawingList.Count == 0)
+            {
+                return;
+            }
+
+            outputFileLocation = SelectOutputFileLocation();
+
+            if (string.IsNullOrEmpty(outputFileLocation))
+            {
+                return;
+            }
+
+            getAttributeList(drawingList);
+            writeBlockDataListToFile();
         }
 
-        public void getBlockData(PurgeAttributeForm form)
+        private string getBlockName()
         {
-            form.Close();
-            form.Dispose();
+            var blockName = "";
 
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
             Database acCurDb = acDoc.Database;
-            var blockData = new BlockData();
-            blockData.AttNameAndvalue = new List<AttName_Value>();
 
             // Start a transaction
             using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
@@ -77,18 +74,7 @@ namespace XrefManager
                         BlockReference br = ent as BlockReference;
                         if (br != null)
                         {
-                            blockData.BlockName = br.Name;
-
-                            foreach (ObjectId attribute in br.AttributeCollection)
-                            {
-                                DBObject obj = acTrans.GetObject(attribute, OpenMode.ForRead);
-                                AttributeReference ar = obj as AttributeReference;
-                                if (ar != null)
-                                {
-                                    blockData.AttNameAndvalue.Add(new AttName_Value { attName = ar.Tag, attValue = ar.TextString });
-                                }
-                            }
-
+                            blockName = br.Name;
                         }
 
                         // Save the new object to the database
@@ -98,31 +84,33 @@ namespace XrefManager
                     // Dispose of the transaction
                 }
             }
-
-            using (var _form = new PurgeAttributeForm())
-            {
-                var drawingList = new List<string>();
-
-                _form.SetTabIndex(1);
-                _form.blockData = blockData;
-                _form.setValueFromInput();
-
-                var result = _form.ShowDialog();
-
-                if (result == System.Windows.Forms.DialogResult.OK)
-                {
-                    drawingList = _form.attributeDrawingList;
-                }
-                if (result == System.Windows.Forms.DialogResult.None)
-                {
-                    return;
-                }
-
-                ReplaceStringValue(drawingList, _form.attBlockname, _form.attAttributeName, _form.attOldValue, _form.attNewValue);
-            }
+            return blockName;
         }
 
-        public void ReplaceStringValue(List<string> drawingList, string blockName, string attributeTag, string oldString, string newString)
+        private List<string> SelectDrawings()
+        {
+            var FD = new OpenFileDialog();
+
+            FD.Filter = "AutoCAD Files | *.dwg";
+            FD.Multiselect = true;
+            FD.Title = "Select drawings to export data from";
+            FD.ShowDialog();
+
+            return FD.FileNames.ToList();
+        }
+
+        private string SelectOutputFileLocation()
+        {
+            var diag = new SaveFileDialog();
+            diag.AddExtension = true;
+            diag.DefaultExt = "Text File | *.txt";
+            diag.Filter = "Text File | *.txt";
+            diag.Title = "Select location to save output file";
+            diag.ShowDialog();
+            return diag.FileName;
+        }
+
+        private void getAttributeList(List<string> drawingList)
         {
             foreach (var drawing in drawingList)
             {
@@ -138,9 +126,8 @@ namespace XrefManager
                             {
                                 using (Transaction trx = openDoc.TransactionManager.StartTransaction())
                                 {
-                                    ChangeAttributeValuePaperSpace(trx, openDoc.Database, blockName, attributeTag, oldString, newString);
-                                    ChangeAttributeValueModelSpace(trx, openDoc.Database, blockName, attributeTag, oldString, newString);
-                                    trx.Commit();
+                                    ChangeAttributeValuePaperSpace(trx, openDoc.Database, drawing);
+                                    ChangeAttributeValueModelSpace(trx, openDoc.Database, drawing);
                                     trx.Dispose();
                                 }
                             }
@@ -151,42 +138,29 @@ namespace XrefManager
                 {
                     Database xrefDb = new Database(false, true);
 
-                    xrefDb.ReadDwgFile(drawing, FileShare.ReadWrite, false, "");
+                    xrefDb.ReadDwgFile(drawing, FileShare.Read, false, "");
 
                     try
                     {
                         using (Transaction trx = xrefDb.TransactionManager.StartTransaction())
                         {
-                            ChangeAttributeValuePaperSpace(trx, xrefDb, blockName, attributeTag, oldString, newString);
-                            ChangeAttributeValueModelSpace(trx, xrefDb, blockName, attributeTag, oldString, newString);
-                            trx.Commit();
+                            ChangeAttributeValuePaperSpace(trx, xrefDb, drawing);
+                            ChangeAttributeValueModelSpace(trx, xrefDb, drawing);
                             trx.Dispose();
                         }
                     }
                     catch (Exception) { }
                     xrefDb.CloseInput(true);
-                    xrefDb.SaveAs(drawing, false, DwgVersion.Current, null);
                 }
-
             }
         }
 
-        private bool DrawingIsOpen(string drawing)
+        private void ChangeAttributeValuePaperSpace(Transaction trx, Database db, string drawingName)
         {
-            var openDocs = Application.DocumentManager;
+            var _blockData = new BlockData();
+            _blockData.BlockName = Path.GetFileNameWithoutExtension(drawingName);
+            _blockData.AttNameAndvalue = new List<AttName_Value>();
 
-            foreach (Document openDoc in openDocs)
-            {
-                if (openDoc.Name == drawing)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private void ChangeAttributeValuePaperSpace(Transaction trx, Database db, string blockName, string attributeTag, string oldString, string newString)
-        {
             ObjectId psId;
             BlockTable bt = (BlockTable)trx.GetObject(db.BlockTableId, OpenMode.ForRead);
             psId = bt[BlockTableRecord.PaperSpace];
@@ -217,28 +191,23 @@ namespace XrefManager
                                 {
                                     // ... to see whether it has
                                     // the tag we're after
+                                    _blockData.AttNameAndvalue.Add(new AttName_Value { attName = ar.Tag, attValue = ar.TextString });
 
-                                    if (ar.Tag.ToUpper() == attributeTag.ToUpper())
-                                    {
-                                        // check if attribute has correct value
-                                        if (ar.TextString == oldString || oldString == "*")
-                                        {
-                                            // If so, update the value
-                                            ar.UpgradeOpen();
-                                            ar.TextString = newString;
-                                            ar.DowngradeOpen();
-                                        }
-                                    }
+
                                 }
                             }
+                            blockDataList.Add(_blockData);
                         }
                     }
                 }
             }
         }
 
-        private void ChangeAttributeValueModelSpace(Transaction trx, Database db, string blockName, string attributeTag, string oldString, string newString)
+        private void ChangeAttributeValueModelSpace(Transaction trx, Database db, string drawingName)
         {
+            var _blockData = new BlockData();
+            _blockData.BlockName = Path.GetFileNameWithoutExtension(drawingName);
+
             ObjectId psId;
             BlockTable bt = (BlockTable)trx.GetObject(db.BlockTableId, OpenMode.ForRead);
             psId = bt[BlockTableRecord.ModelSpace];
@@ -269,24 +238,62 @@ namespace XrefManager
                                 {
                                     // ... to see whether it has
                                     // the tag we're after
+                                    _blockData.AttNameAndvalue.Add(new AttName_Value { attName = ar.Tag, attValue = ar.TextString });
 
-                                    if (ar.Tag.ToUpper() == attributeTag.ToUpper())
-                                    {
-                                        // check if attribute has correct value
-                                        if (ar.TextString == oldString)
-                                        {
-                                            // If so, update the value
-                                            ar.UpgradeOpen();
-                                            ar.TextString = newString;
-                                            ar.DowngradeOpen();
-                                        }
-                                    }
                                 }
                             }
+                            blockDataList.Add(_blockData);
                         }
                     }
                 }
             }
+        }
+
+        private bool DrawingIsOpen(string drawing)
+        {
+            var openDocs = Application.DocumentManager;
+
+            foreach (Document openDoc in openDocs)
+            {
+                if (openDoc.Name == drawing)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        private void writeBlockDataListToFile()
+        {
+            System.IO.StreamWriter file = new System.IO.StreamWriter(outputFileLocation);
+
+
+
+            foreach (var drawing in blockDataList)
+            {
+                var line = "";
+                foreach (var blockattLine in drawing.AttNameAndvalue)
+                {
+                    line = line + blockattLine.attName + "\t";
+                }
+                file.WriteLine("Drawing Name\t" + line);
+                break;
+            }
+
+           
+            foreach (var drawing in blockDataList)
+            {
+                var line = "";
+                foreach (var blockattLine in drawing.AttNameAndvalue)
+                {
+                    line = line + blockattLine.attValue + "\t";
+                }
+                file.WriteLine(drawing.BlockName + "/t" + line);
+            }
+
+
+            file.Close();
         }
     }
 }

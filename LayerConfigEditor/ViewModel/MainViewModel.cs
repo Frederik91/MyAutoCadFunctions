@@ -97,8 +97,6 @@ namespace LayerConfigEditor.ViewModel
 
             var configWriter = new ConfigFileWriter();
 
-            LayerFilterList = LayerFilterList.GroupBy(x => x.LayerName).Select(x => x.First()).ToList();
-
             configWriter.writeConfig(configFilePath, LayerFilterList);
         }
 

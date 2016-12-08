@@ -179,33 +179,9 @@ namespace XrefManager
         [CommandMethod("ChangeAttributeDialog", CommandFlags.Session)]
         public void ChangeAttribute_dialog()
         {
-            var xmlReader = new ReadXml();
-            
-            if (xmlReader.checkXmlPath())
-            {
-                var drawingList = new List<string>();
+            var RV = new ReplaceValue();
 
-                using (var _form = new PurgeAttributeForm())
-                {
-                    _form.SetTabIndex(1);
-
-                    var result = _form.ShowDialog();
-
-                    if (result == System.Windows.Forms.DialogResult.OK)
-                    {
-                        drawingList = _form.attributeDrawingList;
-                    }
-                    if (result == System.Windows.Forms.DialogResult.None)
-                    {
-                        return;
-                    }
-
-                    var RV = new ReplaceValue();
-
-                    RV.ReplaceStringValue(drawingList, _form.attBlockname, _form.attAttributeName, _form.attOldValue, _form.attNewValue);
-
-                }
-            }
+            RV.openDialogeBox();
         }
 
         [CommandMethod("MOVEXREF", CommandFlags.Session)]
@@ -221,5 +197,20 @@ namespace XrefManager
             var changeBlockColorByLayer = new ChangeBlockColorByLayer();
             changeBlockColorByLayer.ChangeColorsBlocksAllDrawings();
         }
+
+        [CommandMethod("GetAllAttributes", CommandFlags.Session)]
+        public void GetAllAttributes()
+        {
+            var GetAllAtt = new GetAllAttributesFromBlockInFiles();
+            GetAllAtt.getAllAttributes();
+        }
+
+        [CommandMethod("GetAllAttributes", CommandFlags.Session)]
+        public void AdjustCableTrays()
+        {
+            var ACT = new AdjustCableTrays();
+            ACT.AdjustCableTrays_bottom();
+        }
     }
+
 }

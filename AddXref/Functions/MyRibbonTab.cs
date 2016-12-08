@@ -67,10 +67,17 @@ namespace MyRibbonTab
 
             Autodesk.Windows.RibbonPanelSource ViewPanel = new RibbonPanelSource();
             ViewPanel.Title = "View";
-
+            
             RibbonPanel ViewPane = new RibbonPanel();
             ViewPane.Source = ViewPanel;
             Tab.Panels.Add(ViewPane);
+
+            Autodesk.Windows.RibbonPanelSource FunctionsPanel = new RibbonPanelSource();
+            FunctionsPanel.Title = "Functions";
+
+            RibbonPanel FunctionsPane = new RibbonPanel();
+            FunctionsPane.Source = FunctionsPanel;
+            Tab.Panels.Add(FunctionsPane);
 
             //////////////////////////////////////////////////
             // create the buttons listed in the split button
@@ -137,6 +144,11 @@ namespace MyRibbonTab
             ChangeAttributeValueButton.ShowText = true;
             ChangeAttributeValueButton.CommandHandler = new MyCmdHandler();
 
+            RibbonButton GenerateAttributeListButton = new RibbonButton();
+            GenerateAttributeListButton.Text = "Generate Attribute List";
+            GenerateAttributeListButton.ShowText = true;
+            GenerateAttributeListButton.CommandHandler = new MyCmdHandler();
+
             #endregion
 
             #region View Buttons
@@ -145,6 +157,11 @@ namespace MyRibbonTab
             TopDownButton.Text = "Top Down";
             TopDownButton.ShowText = true;
             TopDownButton.CommandHandler = new MyCmdHandler();
+
+            Autodesk.Windows.RibbonButton AdjustCableTraysButton = new RibbonButton();
+            AdjustCableTraysButton.Text = "Adjust Cable Trays";
+            AdjustCableTraysButton.ShowText = true;
+            AdjustCableTraysButton.CommandHandler = new MyCmdHandler();
 
             #endregion 
 
@@ -168,6 +185,8 @@ namespace MyRibbonTab
             DrawingMaintenanceRowPanel.Items.Add(PurgeButton);
             DrawingMaintenanceRowPanel.Items.Add(new RibbonRowBreak());
             DrawingMaintenanceRowPanel.Items.Add(ChangeAttributeValueButton);
+            DrawingMaintenanceRowPanel.Items.Add(new RibbonRowBreak());
+            DrawingMaintenanceRowPanel.Items.Add(GenerateAttributeListButton);
 
             XrefSplitButton.Items.Add(xrefButton1);
             XrefSplitButton.Items.Add(xrefButton2);
@@ -186,6 +205,7 @@ namespace MyRibbonTab
             LayerUpdateRowPanel.Items.Add(editLayerConfigButton);
 
             ViewPanel.Items.Add(TopDownButton);
+            FunctionsPanel.Items.Add(AdjustCableTraysButton);
 
             xRefPanel.Items.Add(XrefSplitButton);
             LayerUpdatePanel.Items.Add(LayerUpdateRowPanel);
@@ -249,6 +269,12 @@ namespace MyRibbonTab
                             break;
                         case ("Top Down"):
                             MC.OneVportTopDown();
+                            break;
+                        case ("Generate Attribute List"):
+                            MC.GetAllAttributes();
+                            break;
+                        case ("Adjust Cable Trays"):
+                            MC.AdjustCableTrays();
                             break;
                         default:
                             break;

@@ -30,6 +30,8 @@ namespace LayerConfigEditor.Workers
                 reader.Close();
             }
 
+            layerFilterList = layerFilterList.OrderBy(x => x.Priority).ToList();
+
             return layerFilterList;
         }
 

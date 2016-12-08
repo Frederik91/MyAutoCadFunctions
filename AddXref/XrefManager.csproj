@@ -141,6 +141,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>AppSettings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Functions\AdjustCableTrays.cs" />
     <Compile Include="Functions\ChangeBlockColorByLayer.cs" />
     <Compile Include="Functions\DrawingManager.cs" />
     <Compile Include="Forms\AddXrefForm.cs">
@@ -168,11 +169,14 @@
       <DependentUpon>UpdateLayerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions\EditView.cs" />
+    <Compile Include="Functions\GetAllAttributesFromBlockInFiles.cs" />
     <Compile Include="Functions\GetLayerFromObject.cs" />
     <Compile Include="Functions\LayerUpdate.cs" />
     <Compile Include="Functions\OpenConfigTool.cs" />
     <Compile Include="MainClass.cs" />
     <Compile Include="Functions\LayerComparer.cs" />
+    <Compile Include="Models\AttName_Value.cs" />
+    <Compile Include="Models\BlockData.cs" />
     <Compile Include="Models\ProjectData.cs" />
     <Compile Include="Functions\moveToXreflayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -220,6 +224,17 @@
       <LastGenOutput>AppSettings.Designer.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="MAGICOMSRVLib">
+      <Guid>{949D0710-F36F-4CB2-AD04-7315EAE74D83}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -26,6 +26,8 @@ namespace LayerConfigEditor.Workers
                 }
             }
 
+            layerFilterList = layerFilterList.GroupBy(x => x.LayerName).Select(x => x.First()).ToList();
+
             using (var writer = new StreamWriter(File.Open(filePath, FileMode.CreateNew), Encoding.GetEncoding("iso-8859-1")))
             {
                 var sortedLayerFilterList = layerFilterList.OrderByDescending(x => x.Priority).ToList();
