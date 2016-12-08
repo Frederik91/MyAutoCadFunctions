@@ -14,16 +14,16 @@ namespace XrefManager.Functions
     class AdjustCableTrays
     {
         MagiCAD magiClass = new MagiCAD();
+        Document acDoc = Application.DocumentManager.MdiActiveDocument;
+        Database acCurDb = Application.DocumentManager.MdiActiveDocument.Database;
 
         public void AdjustCableTrays_bottom()
         {
-            // Get the current document and database
-            Document acDoc = Application.DocumentManager.MdiActiveDocument;
-            Database acCurDb = acDoc.Database;
-
             // Start a transaction
             using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
             {
+                acDoc.LockDocument();
+
                 // Request for objects to be selected in the drawing area
                 PromptSelectionResult acSSPrompt = acDoc.Editor.GetSelection();
 
@@ -36,82 +36,76 @@ namespace XrefManager.Functions
                     {
                         if (acSSObj != null)
                         {
-                            Entity acEnt = acTrans.GetObject(acSSObj.ObjectId, OpenMode.ForRead) as Entity;
+                            Entity acEnt = acTrans.GetObject(acSSObj.ObjectId, OpenMode.ForWrite) as Entity;
 
                             if (acEnt != null)
                             {                             
                                 var handleID = acEnt.Handle.ToString();
+                                var Startpoint = GetCableTrayStartpoint(handleID);
+                                var Endpoint = GetCableTrayEndpoint(handleID);
 
-                                acDoc.Editor.WriteMessage("handleID: " + handleID + "\n");
-
-                                var height = GetCableTrayBottomHeight(handleID);
-                                acDoc.Editor.WriteMessage("Bottom height: " + height + "\n");                                
-
-                                if (height < 200)
+                                if ((Startpoint.Z != Endpoint.Z) && (Startpoint.Z < 1050 || Startpoint.Z < 1050))
                                 {
-                                    var vector = new Vector3d(0, 0, 1050-height);
-                                    var point = GetCableTrayStartPoint(handleID);
-                                    SetCableTrayBottomHeight(acEnt, vector, point);
+                                    var point = new Point3d();
+
+                                    if (Startpoint.Z < Endpoint.Z)
+                                    {
+                                        point = Startpoint;
+                                    }
+                                    else
+                                    {
+                                        point = Endpoint;
+                                    }
+
+                                    acDoc.Editor.WriteMessage("Bottom height: " + point.Z + "\n");
+                                    var vector = new Vector3d(0, 0, 1050 - point.Z);
+                                    SetCableTrayBottomHeight(acEnt, vector, point);                                    
                                 }
                             }
                         }
                     }
 
                     // Save the new object to the database
-                    acTrans.Dispose();
+                    acTrans.Commit();                    
                 }
-
                 // Dispose of the transaction
+                acTrans.Dispose();
             }
         }
 
-        private double GetCableTrayBottomHeight(string partHandle)
+        private Point3d GetCableTrayStartpoint(string partHandle)
         {
-            double height;
-            var x = magiClass.getPartAttDouble(partHandle, "/Part/Elevation/Bottom/FCS", out height);            
+            magiClass.getPartAttPoint(partHandle, "/Part/Startpoint/WCS", out double x_start, out double y_start, out double z_start);
+            var Startpoint = new Point3d(x_start, y_start, z_start);
 
-            return height;
+            return Startpoint;
         }
 
-        private Point3d GetCableTrayStartPoint(string partHandle)
+        private Point3d GetCableTrayEndpoint(string partHandle)
         {
-            double x;
-            double y;
-            double z;
-            magiClass.getPartAttPoint(partHandle, "/Part/Startpoint/WCS", out x, out y, out z);
+            magiClass.getPartAttPoint(partHandle, "/Part/Endpoint/WCS", out double x_end, out double y_end, out double z_end);
+            var EndPoint = new Point3d(x_end, y_end, z_end);
 
-            var point = new Point3d(x, y, z);
-
-            return point;
+            return EndPoint;
         }
 
         private void SetCableTrayBottomHeight(Entity ent, Vector3d offset, Point3d gripPoint)
         {
-            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
-            Database db = doc.Database;
-            Transaction tr = db.TransactionManager.StartTransaction();
-            using (tr)
+            GripDataCollection grips = new GripDataCollection();
+            GripDataCollection updateGrip = new GripDataCollection();
+            double curViewUnitSize = 0;
+            int gripSize = 0;
+            Vector3d curViewDir = acDoc.Editor.GetCurrentView().ViewDirection;
+            GetGripPointsFlags bitFlags = GetGripPointsFlags.GripPointsOnly;
+            ent.GetGripPoints(grips, curViewUnitSize, gripSize, curViewDir, bitFlags);
+            foreach (GripData grip in grips)
             {
-                var br = ent as BlockReference;
-                if (br != null)
+                if (grip.GripPoint == gripPoint)
                 {
-                    GripDataCollection grips = new GripDataCollection();
-                    GripDataCollection updateGrip = new GripDataCollection();
-                    double curViewUnitSize = 0;
-                    int gripSize = 0;
-                    Vector3d curViewDir = doc.Editor.GetCurrentView().ViewDirection;
-                    GetGripPointsFlags bitFlags = GetGripPointsFlags.GripPointsOnly;
-                    br.GetGripPoints(grips, curViewUnitSize, gripSize, curViewDir, bitFlags);
-                    foreach (GripData grip in grips)
-                    {
-                        if (grip.GripPoint == gripPoint)
-                        {
-                            updateGrip.Add(grip);
-                        }
-                    }
-                    br.MoveGripPointsAt(updateGrip, offset, MoveGripPointsFlags.Polar);
+                    updateGrip.Add(grip);
                 }
             }
+            ent.MoveGripPointsAt(updateGrip, offset, MoveGripPointsFlags.Polar);              
         }
     }
 }
