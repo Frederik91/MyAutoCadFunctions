@@ -8,6 +8,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.AutoCAD.Colors;
 
 namespace XrefManager.Functions
 {
@@ -19,6 +20,9 @@ namespace XrefManager.Functions
 
         public void AdjustCableTrays_bottom()
         {
+            var garbageLayer = "MAGI_GARBAGE";
+
+            GarbageLayer(garbageLayer);
             // Start a transaction
             using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
             {
@@ -31,6 +35,15 @@ namespace XrefManager.Functions
                 if (acSSPrompt.Status == PromptStatus.OK)
                 {
                     SelectionSet acSSet = acSSPrompt.Value;
+
+                    // Open the Block table for read
+                    BlockTable acBlkTbl;
+                    acBlkTbl = acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead) as BlockTable;
+
+                    // Open the Block table record Model space for write
+                    BlockTableRecord acBlkTblRec;
+                    acBlkTblRec = acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
+
 
                     foreach (SelectedObject acSSObj in acSSet)
                     {
@@ -59,7 +72,20 @@ namespace XrefManager.Functions
 
                                     acDoc.Editor.WriteMessage("Bottom height: " + point.Z + "\n");
                                     var vector = new Vector3d(0, 0, 1050 - point.Z);
-                                    SetCableTrayBottomHeight(acEnt, vector, point);                                    
+                                    SetCableTrayBottomHeight(acEnt, vector, point);
+
+                                    // Create a circle that is at 2,3 with a radius of 4.25
+                                    using (Circle acCirc = new Circle())
+                                    {
+                                        acCirc.Center = point;
+                                        acCirc.Radius = 500;
+
+                                        // Add the new object to the block table record and the transaction
+                                        acBlkTblRec.AppendEntity(acCirc);
+                                        acTrans.AddNewlyCreatedDBObject(acCirc, true);
+
+                                        acCirc.Layer = garbageLayer;
+                                    }
                                 }
                             }
                         }
@@ -106,6 +132,43 @@ namespace XrefManager.Functions
                 }
             }
             ent.MoveGripPointsAt(updateGrip, offset, MoveGripPointsFlags.Polar);              
+        }
+
+        private void GarbageLayer(string layName)
+        {
+            using (Transaction tr = acCurDb.TransactionManager.StartTransaction())
+            {
+                // Get the layer table from the drawing
+
+                LayerTable lt = (LayerTable)tr.GetObject(acCurDb.LayerTableId, OpenMode.ForRead);
+
+                // Check if layer exists
+
+                if (lt.Has(layName)) return;
+
+                // Create our new layer table record...
+
+                LayerTableRecord ltr = new LayerTableRecord();
+
+                // ... and set its properties
+
+                ltr.Name = layName;
+                ltr.Color = Color.FromColorIndex(ColorMethod.ByAci, 2);
+
+                // Add the new layer to the layer table
+
+                lt.UpgradeOpen();
+                ObjectId ltId = lt.Add(ltr);
+                tr.AddNewlyCreatedDBObject(ltr, true);
+
+                // Set the layer to be current for this drawing
+
+                acCurDb.Clayer = ltId;
+
+                // Commit the transaction
+
+                tr.Commit();
+            }      
         }
     }
 }
