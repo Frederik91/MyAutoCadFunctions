@@ -20,13 +20,14 @@ namespace XrefManager.Functions
 
         public void AdjustCableTrays_bottom()
         {
+            acDoc.LockDocument();
             var garbageLayer = "MAGI_GARBAGE";
-
             GarbageLayer(garbageLayer);
+                        
             // Start a transaction
             using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
             {
-                acDoc.LockDocument();
+
 
                 // Request for objects to be selected in the drawing area
                 PromptSelectionResult acSSPrompt = acDoc.Editor.GetSelection();
@@ -49,10 +50,14 @@ namespace XrefManager.Functions
                     {
                         if (acSSObj != null)
                         {
-                            Entity acEnt = acTrans.GetObject(acSSObj.ObjectId, OpenMode.ForWrite) as Entity;
+                            Entity acEnt = acTrans.GetObject(acSSObj.ObjectId, OpenMode.ForRead) as Entity;
+
+                            OpenLayerIfLocked(acEnt.Layer);
 
                             if (acEnt != null)
-                            {                             
+                            {
+                                acEnt = acTrans.GetObject(acSSObj.ObjectId, OpenMode.ForWrite) as Entity;
+
                                 var handleID = acEnt.Handle.ToString();
                                 var Startpoint = GetCableTrayStartpoint(handleID);
                                 var Endpoint = GetCableTrayEndpoint(handleID);
@@ -148,12 +153,14 @@ namespace XrefManager.Functions
 
                 // Create our new layer table record...
 
-                LayerTableRecord ltr = new LayerTableRecord();
+                LayerTableRecord ltr = new LayerTableRecord()
+                {
 
-                // ... and set its properties
+                    // ... and set its properties
 
-                ltr.Name = layName;
-                ltr.Color = Color.FromColorIndex(ColorMethod.ByAci, 2);
+                    Name = layName,
+                    Color = Color.FromColorIndex(ColorMethod.ByAci, 2)
+                };
 
                 // Add the new layer to the layer table
 
@@ -169,6 +176,24 @@ namespace XrefManager.Functions
 
                 tr.Commit();
             }      
+        }
+
+        public void OpenLayerIfLocked(string layName)
+        {
+            using (Transaction tr = acCurDb.TransactionManager.StartTransaction())
+            {
+                LayerTable lt = (LayerTable)tr.GetObject(acCurDb.LayerTableId, OpenMode.ForRead);               
+
+                if (!lt.Has(layName)) return;
+
+                // Create our new layer table record...
+
+                LayerTableRecord ltr = tr.GetObject(lt[layName], OpenMode.ForWrite) as LayerTableRecord;
+
+                ltr.IsLocked = false;               
+
+                tr.Commit();
+            }
         }
     }
 }

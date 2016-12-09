@@ -18,9 +18,9 @@ namespace XrefManager.Functions
         private string blockName = "";
         private string outputFileLocation = "";
 
-        public void getAllAttributes()
+        public void GetAllAttributes()
         {
-            blockName = getBlockName();
+            blockName = GetBlockName();
 
             if (string.IsNullOrEmpty(blockName))
             {
@@ -40,11 +40,11 @@ namespace XrefManager.Functions
                 return;
             }
 
-            getAttributeList(drawingList);
-            writeBlockDataListToFile();
+            GetAttributeList(drawingList);
+            WriteBlockDataListToFile();
         }
 
-        private string getBlockName()
+        private string GetBlockName()
         {
             var blockName = "";
 
@@ -56,9 +56,10 @@ namespace XrefManager.Functions
             {
                 // Request for objects to be selected in the drawing area
 
-                var opt = new PromptSelectionOptions();
-                opt.SingleOnly = true;
-
+                var opt = new PromptSelectionOptions()
+                {
+                    SingleOnly = true
+                };
                 PromptSelectionResult acSSPrompt = acDoc.Editor.GetSelection(opt);
 
                 // If the prompt status is OK, objects were selected
@@ -89,11 +90,12 @@ namespace XrefManager.Functions
 
         private List<string> SelectDrawings()
         {
-            var FD = new OpenFileDialog();
-
-            FD.Filter = "AutoCAD Files | *.dwg";
-            FD.Multiselect = true;
-            FD.Title = "Select drawings to export data from";
+            var FD = new OpenFileDialog()
+            {
+                Filter = "AutoCAD Files | *.dwg",
+                Multiselect = true,
+                Title = "Select drawings to export data from"
+            };
             FD.ShowDialog();
 
             return FD.FileNames.ToList();
@@ -101,16 +103,18 @@ namespace XrefManager.Functions
 
         private string SelectOutputFileLocation()
         {
-            var diag = new SaveFileDialog();
-            diag.AddExtension = true;
-            diag.DefaultExt = "Text File | *.txt";
-            diag.Filter = "Text File | *.txt";
-            diag.Title = "Select location to save output file";
+            var diag = new SaveFileDialog()
+            {
+                AddExtension = true,
+                DefaultExt = "Text File | *.txt",
+                Filter = "Text File | *.txt",
+                Title = "Select location to save output file"
+            };
             diag.ShowDialog();
             return diag.FileName;
         }
 
-        private void getAttributeList(List<string> drawingList)
+        private void GetAttributeList(List<string> drawingList)
         {
             foreach (var drawing in drawingList)
             {
@@ -157,10 +161,11 @@ namespace XrefManager.Functions
 
         private void ChangeAttributeValuePaperSpace(Transaction trx, Database db, string drawingName)
         {
-            var _blockData = new BlockData();
-            _blockData.BlockName = Path.GetFileNameWithoutExtension(drawingName);
-            _blockData.AttNameAndvalue = new List<AttName_Value>();
-
+            var _blockData = new BlockData()
+            {
+                BlockName = Path.GetFileNameWithoutExtension(drawingName),
+                AttNameAndvalue = new List<AttName_Value>()
+            };
             ObjectId psId;
             BlockTable bt = (BlockTable)trx.GetObject(db.BlockTableId, OpenMode.ForRead);
             psId = bt[BlockTableRecord.PaperSpace];
@@ -205,9 +210,10 @@ namespace XrefManager.Functions
 
         private void ChangeAttributeValueModelSpace(Transaction trx, Database db, string drawingName)
         {
-            var _blockData = new BlockData();
-            _blockData.BlockName = Path.GetFileNameWithoutExtension(drawingName);
-
+            var _blockData = new BlockData()
+            {
+                BlockName = Path.GetFileNameWithoutExtension(drawingName)
+            };
             ObjectId psId;
             BlockTable bt = (BlockTable)trx.GetObject(db.BlockTableId, OpenMode.ForRead);
             psId = bt[BlockTableRecord.ModelSpace];
@@ -264,7 +270,7 @@ namespace XrefManager.Functions
         }
 
 
-        private void writeBlockDataListToFile()
+        private void WriteBlockDataListToFile()
         {
             System.IO.StreamWriter file = new System.IO.StreamWriter(outputFileLocation);
 

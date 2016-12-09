@@ -45,7 +45,7 @@ namespace LayerConfigEditor.ViewModel
             ConfigFileSelectedCommand = new RelayCommand(ConfigFileSelected);
         }
 
-        public void setColor(int index)
+        public void SetColor(int index)
         {
             ColorDialog cd = new ColorDialog();
             System.Windows.Forms.DialogResult dr = cd.ShowDialog();
@@ -76,8 +76,10 @@ namespace LayerConfigEditor.ViewModel
 
         private void OpenConfig()
         {
-            var dialog = new System.Windows.Forms.OpenFileDialog();
-            dialog.DefaultExt = "Text files | *.txt";
+            var dialog = new System.Windows.Forms.OpenFileDialog()
+            {
+                DefaultExt = "Text files | *.txt"
+            };
             dialog.ShowDialog();
 
             if (File.Exists(dialog.FileName))
@@ -102,10 +104,12 @@ namespace LayerConfigEditor.ViewModel
 
         private void SaveAsConfig()
         {
-            var dialog = new System.Windows.Forms.SaveFileDialog();
-            dialog.AddExtension = true;
-            dialog.Filter = "Text files | *.txt";
-            dialog.OverwritePrompt = true;
+            var dialog = new System.Windows.Forms.SaveFileDialog()
+            {
+                AddExtension = true,
+                Filter = "Text files | *.txt",
+                OverwritePrompt = true
+            };
             dialog.ShowDialog();
 
             if (!string.IsNullOrEmpty(dialog.FileName))

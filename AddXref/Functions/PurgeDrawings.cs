@@ -38,7 +38,7 @@ namespace XrefManager
 
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    drawingList = _form.purgeDrawingList;
+                    drawingList = _form.PurgeDrawingList;
                 }
                 if (result == System.Windows.Forms.DialogResult.None)
                 {

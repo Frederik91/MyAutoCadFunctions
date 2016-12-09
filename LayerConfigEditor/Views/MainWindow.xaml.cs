@@ -19,7 +19,7 @@ namespace LayerConfigEditor
 
         public void Row_DoubleClick(object sender, MouseButtonEventArgs e)
         {
-            MainViewModel.setColor(LayerFilter_DataGrid.SelectedIndex);
+            MainViewModel.SetColor(LayerFilter_DataGrid.SelectedIndex);
 
             var x = LayerFilter_DataGrid.SelectedIndex;
             LayerFilter_DataGrid.SelectedIndex = 0;

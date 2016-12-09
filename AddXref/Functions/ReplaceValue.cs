@@ -15,7 +15,7 @@ namespace XrefManager
 {
     public class ReplaceValue
     {
-        public void openDialogeBox()
+        public void OpenDialogeBox()
         {
             var xmlReader = new ReadXml();
 
@@ -31,37 +31,40 @@ namespace XrefManager
 
                     if (result == System.Windows.Forms.DialogResult.OK)
                     {
-                        drawingList = _form.attributeDrawingList;
+                        drawingList = _form.AttributeDrawingList;
                     }
                     if (result == System.Windows.Forms.DialogResult.None)
                     {
                         return;
                     }
 
-                    ReplaceStringValue(drawingList, _form.attBlockname, _form.attAttributeName, _form.attOldValue, _form.attNewValue);
+                    ReplaceStringValue(drawingList, _form.AttBlockname, _form.LinkattAttributeName, _form.LinkAttValue, _form.ChangeattAttributeName, _form.ChangeAttValue);
 
                 }
             }
         }
 
-        public void getBlockData(PurgeAttributeForm form)
+        public void GetBlockData(PurgeAttributeForm form)
         {
             form.Close();
             form.Dispose();
 
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
             Database acCurDb = acDoc.Database;
-            var blockData = new BlockData();
-            blockData.AttNameAndvalue = new List<AttName_Value>();
-
+            var blockData = new BlockData()
+            {
+                AttNameAndvalue = new List<AttName_Value>()
+            };
+            
             // Start a transaction
             using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
             {
                 // Request for objects to be selected in the drawing area
 
-                var opt = new PromptSelectionOptions();
-                opt.SingleOnly = true;
-
+                var opt = new PromptSelectionOptions()
+                {
+                    SingleOnly = true
+                };
                 PromptSelectionResult acSSPrompt = acDoc.Editor.GetSelection(opt);
 
                 // If the prompt status is OK, objects were selected
@@ -104,25 +107,25 @@ namespace XrefManager
                 var drawingList = new List<string>();
 
                 _form.SetTabIndex(1);
-                _form.blockData = blockData;
-                _form.setValueFromInput();
+                _form.BlockData = blockData;
+                _form.SetValueFromInput();
 
                 var result = _form.ShowDialog();
 
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    drawingList = _form.attributeDrawingList;
+                    drawingList = _form.AttributeDrawingList;
                 }
                 if (result == System.Windows.Forms.DialogResult.None)
                 {
                     return;
                 }
 
-                ReplaceStringValue(drawingList, _form.attBlockname, _form.attAttributeName, _form.attOldValue, _form.attNewValue);
+                ReplaceStringValue(drawingList, _form.AttBlockname, _form.LinkattAttributeName, _form.LinkAttValue, _form.ChangeattAttributeName, _form.ChangeAttValue);
             }
         }
 
-        public void ReplaceStringValue(List<string> drawingList, string blockName, string attributeTag, string oldString, string newString)
+        public void ReplaceStringValue(List<string> drawingList, string blockName, string LinkAttName, string LinkAttValue, string ChangeAttName, string ChangeAttValue)
         {
             foreach (var drawing in drawingList)
             {
@@ -138,8 +141,8 @@ namespace XrefManager
                             {
                                 using (Transaction trx = openDoc.TransactionManager.StartTransaction())
                                 {
-                                    ChangeAttributeValuePaperSpace(trx, openDoc.Database, blockName, attributeTag, oldString, newString);
-                                    ChangeAttributeValueModelSpace(trx, openDoc.Database, blockName, attributeTag, oldString, newString);
+                                    ChangeAttributeValuePaperSpace(trx, openDoc.Database, blockName, LinkAttName, LinkAttValue, ChangeAttName, ChangeAttValue);
+                                    ChangeAttributeValueModelSpace(trx, openDoc.Database, blockName, LinkAttName, LinkAttValue, ChangeAttName, ChangeAttValue);
                                     trx.Commit();
                                     trx.Dispose();
                                 }
@@ -157,8 +160,8 @@ namespace XrefManager
                     {
                         using (Transaction trx = xrefDb.TransactionManager.StartTransaction())
                         {
-                            ChangeAttributeValuePaperSpace(trx, xrefDb, blockName, attributeTag, oldString, newString);
-                            ChangeAttributeValueModelSpace(trx, xrefDb, blockName, attributeTag, oldString, newString);
+                            ChangeAttributeValuePaperSpace(trx, xrefDb, blockName, LinkAttName, LinkAttValue, ChangeAttName, ChangeAttValue);
+                            ChangeAttributeValueModelSpace(trx, xrefDb, blockName, LinkAttName, LinkAttValue, ChangeAttName, ChangeAttValue);
                             trx.Commit();
                             trx.Dispose();
                         }
@@ -185,7 +188,7 @@ namespace XrefManager
             return false;
         }
 
-        private void ChangeAttributeValuePaperSpace(Transaction trx, Database db, string blockName, string attributeTag, string oldString, string newString)
+        private void ChangeAttributeValuePaperSpace(Transaction trx, Database db, string blockName, string LinkAttName, string LinkAttValue, string ChangeAttName, string ChangeAttValue)
         {
             ObjectId psId;
             BlockTable bt = (BlockTable)trx.GetObject(db.BlockTableId, OpenMode.ForRead);
@@ -207,6 +210,8 @@ namespace XrefManager
 
                         if (bd.Name.ToUpper() == blockName.ToUpper())
                         {
+                            bool correctBlockBool = false;
+
                             // Check each of the attributes...
 
                             foreach (ObjectId arId in br.AttributeCollection)
@@ -218,26 +223,47 @@ namespace XrefManager
                                     // ... to see whether it has
                                     // the tag we're after
 
-                                    if (ar.Tag.ToUpper() == attributeTag.ToUpper())
+                                    if (ar.Tag.ToUpper() == LinkAttName.ToUpper())
                                     {
                                         // check if attribute has correct value
-                                        if (ar.TextString == oldString || oldString == "*")
+                                        if (ar.TextString == LinkAttValue || LinkAttValue == "*")
                                         {
-                                            // If so, update the value
-                                            ar.UpgradeOpen();
-                                            ar.TextString = newString;
-                                            ar.DowngradeOpen();
+                                            // If so, mark for change.
+                                            correctBlockBool = true;
                                         }
                                     }
                                 }
                             }
+
+                            if (correctBlockBool)
+                            {
+                                foreach (ObjectId arId in br.AttributeCollection)
+                                {
+                                    DBObject obj = trx.GetObject(arId, OpenMode.ForRead);
+                                    AttributeReference ar = obj as AttributeReference;
+                                    if (ar != null)
+                                    {
+                                        // Check tag name                                    
+
+                                        if (ar.Tag.ToUpper() == ChangeAttName.ToUpper())
+                                        {
+                                            correctBlockBool = true;
+
+                                            // If so, update the value
+                                            ar.UpgradeOpen();
+                                            ar.TextString = ChangeAttValue;
+                                            ar.DowngradeOpen();
+                                        }
+                                    }
+                                }
+                            }                           
                         }
                     }
                 }
             }
         }
 
-        private void ChangeAttributeValueModelSpace(Transaction trx, Database db, string blockName, string attributeTag, string oldString, string newString)
+        private void ChangeAttributeValueModelSpace(Transaction trx, Database db, string blockName, string LinkAttName, string LinkAttValue, string ChangeAttName,  string ChangeAttValue)
         {
             ObjectId psId;
             BlockTable bt = (BlockTable)trx.GetObject(db.BlockTableId, OpenMode.ForRead);
@@ -259,6 +285,8 @@ namespace XrefManager
 
                         if (bd.Name.ToUpper() == blockName.ToUpper())
                         {
+                            bool correctBlockBool = false;
+
                             // Check each of the attributes...
 
                             foreach (ObjectId arId in br.AttributeCollection)
@@ -270,14 +298,36 @@ namespace XrefManager
                                     // ... to see whether it has
                                     // the tag we're after
 
-                                    if (ar.Tag.ToUpper() == attributeTag.ToUpper())
+                                    if (ar.Tag.ToUpper() == LinkAttName.ToUpper())
                                     {
                                         // check if attribute has correct value
-                                        if (ar.TextString == oldString)
+                                        if (ar.TextString == LinkAttValue || LinkAttValue == "*")
                                         {
+                                            // If so, mark for change.
+                                            correctBlockBool = true;
+                                        }
+                                    }
+                                }
+                            }
+
+
+                            if (correctBlockBool)
+                            {
+                                foreach (ObjectId arId in br.AttributeCollection)
+                                {
+                                    DBObject obj = trx.GetObject(arId, OpenMode.ForRead);
+                                    AttributeReference ar = obj as AttributeReference;
+                                    if (ar != null)
+                                    {
+                                        // Check tag name                                    
+
+                                        if (ar.Tag.ToUpper() == ChangeAttName.ToUpper())
+                                        {
+                                            correctBlockBool = true;
+
                                             // If so, update the value
                                             ar.UpgradeOpen();
-                                            ar.TextString = newString;
+                                            ar.TextString = ChangeAttValue;
                                             ar.DowngradeOpen();
                                         }
                                     }

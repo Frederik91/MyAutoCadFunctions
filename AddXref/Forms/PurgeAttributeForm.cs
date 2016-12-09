@@ -13,9 +13,9 @@ namespace XrefManager.Forms
 {
     public partial class PurgeAttributeForm : Form
     {
-        public List<string> purgeDrawingList { get; set; }
-        public List<string> attributeDrawingList { get; set; }
-        public BlockData blockData { get; set; }
+        public List<string> PurgeDrawingList { get; set; }
+        public List<string> AttributeDrawingList { get; set; }
+        public BlockData BlockData { get; set; }
 
         AppSettings attSettings = AppSettings.Default;
 
@@ -24,19 +24,19 @@ namespace XrefManager.Forms
         {
             InitializeComponent();
 
-            attBlockname = attSettings.BlockName;
-            attAttributeName = attSettings.AttributeName;
-            attOldValue = attSettings.OldValue;
-            attNewValue = attSettings.NewValue;
+            AttBlockname = attSettings.BlockName;
+            LinkattAttributeName = attSettings.LinkAttributeName;
+            LinkAttValue = attSettings.LinkValue;
+            ChangeAttValue = attSettings.ChangeValue;            
 
-            blockData = new BlockData();
+            BlockData = new BlockData();
         }
 
         private void PurgeBrowse_button_Click(object sender, EventArgs e)
         {
             var PU = new PurgeDrawings();
-            purgeDrawingList = PU.getDrawingsToPurge();
-            Purge_listBox.DataSource = purgeDrawingList;
+            PurgeDrawingList = PU.getDrawingsToPurge();
+            Purge_listBox.DataSource = PurgeDrawingList;
         }
 
 
@@ -47,7 +47,7 @@ namespace XrefManager.Forms
 
         private void PurgeStart_button_Click(object sender, EventArgs e)
         {
-            if (purgeDrawingList.Count == 0)
+            if (PurgeDrawingList.Count == 0)
             {
                 DialogResult = DialogResult.None;
             }
@@ -59,9 +59,9 @@ namespace XrefManager.Forms
             Close();
         }
 
-        private void attributeStart_button_Click(object sender, EventArgs e)
+        private void AttributeStart_button_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(attBlockname) || string.IsNullOrEmpty(attAttributeName) || string.IsNullOrEmpty(attOldValue) || string.IsNullOrEmpty(attNewValue) || attributeDrawingList.Count == 0)
+            if (string.IsNullOrEmpty(AttBlockname) || string.IsNullOrEmpty(LinkattAttributeName) || string.IsNullOrEmpty(LinkAttValue) || string.IsNullOrEmpty(ChangeAttValue) || AttributeDrawingList.Count == 0)
             {
                 DialogResult = DialogResult.None;
             }
@@ -69,10 +69,12 @@ namespace XrefManager.Forms
             {
                 DialogResult = DialogResult.OK;
 
-                attSettings.BlockName = attBlockname;
-                attSettings.AttributeName = attAttributeName;
-                attSettings.OldValue = attOldValue;
-                attSettings.NewValue = attNewValue;
+                attSettings.BlockName = AttBlockname;
+                attSettings.LinkAttributeName = LinkattAttributeName;
+                attSettings.LinkValue = LinkAttValue;
+                attSettings.ChangeValue = ChangeAttValue;
+
+                attSettings.ChangeAttributeName = ChangeattAttributeName;
 
                 attSettings.Save();
             }
@@ -80,35 +82,42 @@ namespace XrefManager.Forms
             Close();
         }
 
-        public string attBlockname
+
+        public string AttBlockname
         {
             get { return attributeBlockname_textBox.Text; }
             set { attributeBlockname_textBox.Text = value; }
         }
 
-        public string attAttributeName
+        public string LinkattAttributeName
         {
-            get { return attributeAttributeName_textBox.Text; }
-            set { attributeAttributeName_textBox.Text = value; }
+            get { return attributeLinkAttributeName_textBox.Text; }
+            set { attributeLinkAttributeName_textBox.Text = value; }
         }
 
-        public string attOldValue
+        public string LinkAttValue
         {
-            get { return attributeOldValue_textBox.Text; }
-            set { attributeOldValue_textBox.Text = value; }
+            get { return LinkAttributeValue_textBox.Text; }
+            set { LinkAttributeValue_textBox.Text = value; }
         }
 
-        public string attNewValue
+        public string ChangeattAttributeName
         {
-            get { return attributeNewValue_textBox.Text; }
-            set { attributeNewValue_textBox.Text = value; }
+            get { return ChangeAttributeName_textBox.Text; }
+            set { ChangeAttributeName_textBox.Text = value; }
         }
 
-        private void attributeBrowse_button_Click(object sender, EventArgs e)
+        public string ChangeAttValue
+        {
+            get { return ChangeAttributeValue_textBox.Text; }
+            set { ChangeAttributeValue_textBox.Text = value; }
+        }
+
+        private void AttributeBrowse_button_Click(object sender, EventArgs e)
         {
             var UX = new UnloadXref();
-            attributeDrawingList = UX.getDrawingList();
-            attributeDrawingList_listBox.DataSource = attributeDrawingList;
+            AttributeDrawingList = UX.getDrawingList();
+            attributeDrawingList_listBox.DataSource = AttributeDrawingList;
         }
 
         private void SelectBlock_button_Click(object sender, EventArgs e)
@@ -116,28 +125,55 @@ namespace XrefManager.Forms
 
         }
 
-        private void Attributes_comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void LinkAttributes_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            attAttributeName = blockData.AttNameAndvalue[Attributes_comboBox.SelectedIndex].attName;
-            attOldValue = blockData.AttNameAndvalue[Attributes_comboBox.SelectedIndex].attValue;
+            LinkattAttributeName = BlockData.AttNameAndvalue[LinkAttributes_comboBox.SelectedIndex].attName;
+            LinkAttValue = BlockData.AttNameAndvalue[LinkAttributes_comboBox.SelectedIndex].attValue;
         }
 
-        public void setValueFromInput()
+        public void SetValueFromInput()
         {
-            attBlockname = blockData.BlockName;
+            AttBlockname = BlockData.BlockName;
 
             var attributeNames = new List<string>();
 
-            foreach (var att in blockData.AttNameAndvalue)
+            foreach (var att in BlockData.AttNameAndvalue)
             {
-                Attributes_comboBox.Items.Add(att.attName);
+                LinkAttributes_comboBox.Items.Add(att.attName);
+                ChangeAttribute_comboBox.Items.Add(att.attName);
             }
         }
 
         private void SelectBlock_button_Click_1(object sender, EventArgs e)
         {
             var RV = new ReplaceValue();
-            RV.getBlockData(this);
+            RV.GetBlockData(this);
+        }
+
+        private void AttributeLinkAttributeName_textBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LinkattributeOldValue_textBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ChangeAttribute_comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ChangeattAttributeName = BlockData.AttNameAndvalue[ChangeAttribute_comboBox.SelectedIndex].attName;
+            ChangeAttValue = BlockData.AttNameAndvalue[ChangeAttribute_comboBox.SelectedIndex].attValue;
+        }
+
+        private void ChangeAttributeName_textBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ChangeAttributeValue_textBox_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

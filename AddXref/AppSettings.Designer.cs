@@ -12,7 +12,7 @@ namespace XrefManager {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.0.0.0")]
     internal sealed partial class AppSettings : global::System.Configuration.ApplicationSettingsBase {
         
         private static AppSettings defaultInstance = ((AppSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new AppSettings())));
@@ -50,36 +50,48 @@ namespace XrefManager {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string AttributeName {
+        public string LinkAttributeName {
             get {
-                return ((string)(this["AttributeName"]));
+                return ((string)(this["LinkAttributeName"]));
             }
             set {
-                this["AttributeName"] = value;
+                this["LinkAttributeName"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string OldValue {
+        public string LinkValue {
             get {
-                return ((string)(this["OldValue"]));
+                return ((string)(this["LinkValue"]));
             }
             set {
-                this["OldValue"] = value;
+                this["LinkValue"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string NewValue {
+        public string ChangeValue {
             get {
-                return ((string)(this["NewValue"]));
+                return ((string)(this["ChangeValue"]));
             }
             set {
-                this["NewValue"] = value;
+                this["ChangeValue"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ChangeAttributeName {
+            get {
+                return ((string)(this["ChangeAttributeName"]));
+            }
+            set {
+                this["ChangeAttributeName"] = value;
             }
         }
     }

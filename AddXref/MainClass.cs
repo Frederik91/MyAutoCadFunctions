@@ -122,17 +122,28 @@ namespace XrefManager
         {
             Editor ed = Application.DocumentManager.MdiActiveDocument.Editor;
 
-            PromptStringOptions blocknameOptions = new PromptStringOptions("\nEnter Blockname");
-            blocknameOptions.AllowSpaces = true;
+            PromptStringOptions blocknameOptions = new PromptStringOptions("\nEnter Blockname")
+            {
+                AllowSpaces = true
+            };
+            PromptStringOptions LinkAttName_string = new PromptStringOptions("\nEnter name of attribute to check")
+            {
+                AllowSpaces = true
+            };
 
-            PromptStringOptions attributeTagOptions = new PromptStringOptions("\nEnter attribute name");
-            attributeTagOptions.AllowSpaces = true;
+            PromptStringOptions LinkAttValue_string = new PromptStringOptions("\nEnter value of attribute to check")
+            {
+                AllowSpaces = true
+            };
+            PromptStringOptions ChangeAttName_string = new PromptStringOptions("\nEnter name of attribute to change value")
+            {
+                AllowSpaces = true
+            };
 
-            PromptStringOptions oldStringOptions = new PromptStringOptions("\nEnter old attribute value");
-            oldStringOptions.AllowSpaces = true;
-
-            PromptStringOptions newStringOptions = new PromptStringOptions("\nEnter new attribute value");
-            newStringOptions.AllowSpaces = true;
+            PromptStringOptions ChangeAttValue_string = new PromptStringOptions("\nEnter new attribute value")
+            {
+                AllowSpaces = true
+            };
 
             PromptResult blockname = ed.GetString(blocknameOptions);
             if (blockname.Status != PromptStatus.OK)
@@ -141,22 +152,30 @@ namespace XrefManager
                 return;
             }
 
-            PromptResult attributeTag = ed.GetString(attributeTagOptions);
-            if (attributeTag.Status != PromptStatus.OK)
+            PromptResult LinkAttName = ed.GetString(LinkAttName_string);
+            if (LinkAttName.Status != PromptStatus.OK)
             {
                 ed.WriteMessage("No string was provided\n");
                 return;
             }
 
-            PromptResult oldString = ed.GetString(oldStringOptions);
-            if (oldString.Status != PromptStatus.OK)
+            PromptResult LinkAttValue = ed.GetString(LinkAttValue_string);
+            if (LinkAttValue.Status != PromptStatus.OK)
             {
                 ed.WriteMessage("No string was provided\n");
                 return;
             }
 
-            PromptResult newString = ed.GetString(newStringOptions);
-            if (newString.Status != PromptStatus.OK)
+
+            PromptResult ChangeAttName = ed.GetString(LinkAttValue_string);
+            if (LinkAttValue.Status != PromptStatus.OK)
+            {
+                ed.WriteMessage("No string was provided\n");
+                return;
+            }
+
+            PromptResult ChangeAttValue = ed.GetString(LinkAttValue_string);
+            if (ChangeAttValue.Status != PromptStatus.OK)
             {
                 ed.WriteMessage("No string was provided\n");
                 return;
@@ -172,7 +191,7 @@ namespace XrefManager
 
             var RV = new ReplaceValue();
 
-            RV.ReplaceStringValue(drawingList, blockname.StringResult, attributeTag.StringResult, oldString.StringResult, newString.StringResult);
+            RV.ReplaceStringValue(drawingList, blockname.StringResult, LinkAttName.StringResult, LinkAttValue.StringResult, ChangeAttName.StringResult, ChangeAttValue.StringResult);
 
         }
 
@@ -181,11 +200,11 @@ namespace XrefManager
         {
             var RV = new ReplaceValue();
 
-            RV.openDialogeBox();
+            RV.OpenDialogeBox();
         }
 
         [CommandMethod("MOVEXREF", CommandFlags.Session)]
-        public void moveToXrefLayer()
+        public void MoveToXrefLayer()
         {
             var MTXL = new moveToXreflayer();
             MTXL.moveXref();
@@ -202,7 +221,7 @@ namespace XrefManager
         public void GetAllAttributes()
         {
             var GetAllAtt = new GetAllAttributesFromBlockInFiles();
-            GetAllAtt.getAllAttributes();
+            GetAllAtt.GetAllAttributes();
         }
 
         [CommandMethod("GetAllAttributes", CommandFlags.Session)]

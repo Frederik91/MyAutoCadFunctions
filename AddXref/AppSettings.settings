@@ -8,13 +8,16 @@
     <Setting Name="BlockName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="AttributeName" Type="System.String" Scope="User">
+    <Setting Name="LinkAttributeName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="OldValue" Type="System.String" Scope="User">
+    <Setting Name="LinkValue" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="NewValue" Type="System.String" Scope="User">
+    <Setting Name="ChangeValue" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ChangeAttributeName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
