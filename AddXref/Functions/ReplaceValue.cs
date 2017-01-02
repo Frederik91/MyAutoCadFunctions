@@ -76,17 +76,14 @@ namespace XrefManager
                     foreach (SelectedObject acSSObj in acSSet)
                     {
                         Entity ent = acTrans.GetObject(acSSObj.ObjectId, OpenMode.ForRead) as Entity;
-
-                        BlockReference br = ent as BlockReference;
-                        if (br != null)
+                        if (ent is BlockReference br)
                         {
                             blockData.BlockName = br.Name;
 
                             foreach (ObjectId attribute in br.AttributeCollection)
                             {
                                 DBObject obj = acTrans.GetObject(attribute, OpenMode.ForRead);
-                                AttributeReference ar = obj as AttributeReference;
-                                if (ar != null)
+                                if (obj is AttributeReference ar)
                                 {
                                     blockData.AttNameAndvalue.Add(new AttName_Value { attName = ar.Tag, attValue = ar.TextString });
                                 }
@@ -198,11 +195,9 @@ namespace XrefManager
 
             foreach (var entId in btr)
             {
-                Entity ent = trx.GetObject(entId, OpenMode.ForRead) as Entity;
-                if (ent != null)
+                if (trx.GetObject(entId, OpenMode.ForRead) is Entity ent)
                 {
-                    BlockReference br = ent as BlockReference;
-                    if (br != null)
+                    if (ent is BlockReference br)
                     {
                         BlockTableRecord bd = (BlockTableRecord)trx.GetObject(br.BlockTableRecord, OpenMode.ForRead);
 
@@ -217,8 +212,7 @@ namespace XrefManager
                             foreach (ObjectId arId in br.AttributeCollection)
                             {
                                 DBObject obj = trx.GetObject(arId, OpenMode.ForRead);
-                                AttributeReference ar = obj as AttributeReference;
-                                if (ar != null)
+                                if (obj is AttributeReference ar)
                                 {
                                     // ... to see whether it has
                                     // the tag we're after
@@ -240,8 +234,7 @@ namespace XrefManager
                                 foreach (ObjectId arId in br.AttributeCollection)
                                 {
                                     DBObject obj = trx.GetObject(arId, OpenMode.ForRead);
-                                    AttributeReference ar = obj as AttributeReference;
-                                    if (ar != null)
+                                    if (obj is AttributeReference ar)
                                     {
                                         // Check tag name                                    
 
@@ -256,7 +249,7 @@ namespace XrefManager
                                         }
                                     }
                                 }
-                            }                           
+                            }
                         }
                     }
                 }
@@ -273,11 +266,9 @@ namespace XrefManager
 
             foreach (var entId in btr)
             {
-                Entity ent = trx.GetObject(entId, OpenMode.ForRead) as Entity;
-                if (ent != null)
+                if (trx.GetObject(entId, OpenMode.ForRead) is Entity ent)
                 {
-                    BlockReference br = ent as BlockReference;
-                    if (br != null)
+                    if (ent is BlockReference br)
                     {
                         BlockTableRecord bd = (BlockTableRecord)trx.GetObject(br.BlockTableRecord, OpenMode.ForRead);
 
@@ -292,8 +283,7 @@ namespace XrefManager
                             foreach (ObjectId arId in br.AttributeCollection)
                             {
                                 DBObject obj = trx.GetObject(arId, OpenMode.ForRead);
-                                AttributeReference ar = obj as AttributeReference;
-                                if (ar != null)
+                                if (obj is AttributeReference ar)
                                 {
                                     // ... to see whether it has
                                     // the tag we're after
@@ -316,8 +306,7 @@ namespace XrefManager
                                 foreach (ObjectId arId in br.AttributeCollection)
                                 {
                                     DBObject obj = trx.GetObject(arId, OpenMode.ForRead);
-                                    AttributeReference ar = obj as AttributeReference;
-                                    if (ar != null)
+                                    if (obj is AttributeReference ar)
                                     {
                                         // Check tag name                                    
 
