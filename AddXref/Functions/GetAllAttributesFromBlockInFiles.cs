@@ -71,9 +71,7 @@ namespace XrefManager.Functions
                     foreach (SelectedObject acSSObj in acSSet)
                     {
                         Entity ent = acTrans.GetObject(acSSObj.ObjectId, OpenMode.ForRead) as Entity;
-
-                        BlockReference br = ent as BlockReference;
-                        if (br != null)
+                        if (ent is BlockReference br)
                         {
                             blockName = br.Name;
                         }
@@ -174,11 +172,9 @@ namespace XrefManager.Functions
 
             foreach (var entId in btr)
             {
-                Entity ent = trx.GetObject(entId, OpenMode.ForRead) as Entity;
-                if (ent != null)
+                if (trx.GetObject(entId, OpenMode.ForRead) is Entity ent)
                 {
-                    BlockReference br = ent as BlockReference;
-                    if (br != null)
+                    if (ent is BlockReference br)
                     {
                         BlockTableRecord bd = (BlockTableRecord)trx.GetObject(br.BlockTableRecord, OpenMode.ForRead);
 
@@ -191,8 +187,7 @@ namespace XrefManager.Functions
                             foreach (ObjectId arId in br.AttributeCollection)
                             {
                                 DBObject obj = trx.GetObject(arId, OpenMode.ForRead);
-                                AttributeReference ar = obj as AttributeReference;
-                                if (ar != null)
+                                if (obj is AttributeReference ar)
                                 {
                                     // ... to see whether it has
                                     // the tag we're after
@@ -222,11 +217,9 @@ namespace XrefManager.Functions
 
             foreach (var entId in btr)
             {
-                Entity ent = trx.GetObject(entId, OpenMode.ForRead) as Entity;
-                if (ent != null)
+                if (trx.GetObject(entId, OpenMode.ForRead) is Entity ent)
                 {
-                    BlockReference br = ent as BlockReference;
-                    if (br != null)
+                    if (ent is BlockReference br)
                     {
                         BlockTableRecord bd = (BlockTableRecord)trx.GetObject(br.BlockTableRecord, OpenMode.ForRead);
 
@@ -239,8 +232,7 @@ namespace XrefManager.Functions
                             foreach (ObjectId arId in br.AttributeCollection)
                             {
                                 DBObject obj = trx.GetObject(arId, OpenMode.ForRead);
-                                AttributeReference ar = obj as AttributeReference;
-                                if (ar != null)
+                                if (obj is AttributeReference ar)
                                 {
                                     // ... to see whether it has
                                     // the tag we're after
