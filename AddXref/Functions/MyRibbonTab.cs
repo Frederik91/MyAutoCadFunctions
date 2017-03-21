@@ -12,7 +12,7 @@ namespace MyRibbonTab
 {
     public class Commands
     {
-        BitmapImage getBitmap(string fileName)
+        BitmapImage GetBitmap(string fileName)
         {
             BitmapImage bmp = new BitmapImage();
             // BitmapImage.UriSource must be in a BeginInit/EndInit block.             
@@ -29,54 +29,69 @@ namespace MyRibbonTab
         [CommandMethod("RibbonSplitButton")]
         public void RibbonSplitButton()
         {
-            Autodesk.Windows.RibbonControl ribbonControl =
-              Autodesk.Windows.ComponentManager.Ribbon;
+            RibbonControl ribbonControl = ComponentManager.Ribbon;
 
             /////////////////////////////////////
             // create Ribbon tab
-            RibbonTab Tab = new RibbonTab();
-            Tab.Title = "Drawing manager";
-            Tab.Id = "DRAWINGMANAGER_TAB_ID";
-
+            RibbonTab Tab = new RibbonTab()
+            {
+                Title = "Drawing manager",
+                Id = "DRAWINGMANAGER_TAB_ID"
+            };
             ribbonControl.Tabs.Add(Tab);
 
             #region Panels
 
             /////////////////////////////////////
             // create Ribbon panel
-            Autodesk.Windows.RibbonPanelSource xRefPanel = new RibbonPanelSource();
-            xRefPanel.Title = "Xrefs";
-
-            RibbonPanel xRefPane = new RibbonPanel();
-            xRefPane.Source = xRefPanel;
+            RibbonPanelSource xRefPanel = new RibbonPanelSource()
+            {
+                Title = "Xrefs"
+            };
+            RibbonPanel xRefPane = new RibbonPanel()
+            {
+                Source = xRefPanel
+            };
             Tab.Panels.Add(xRefPane);
 
-            Autodesk.Windows.RibbonPanelSource LayerUpdatePanel = new RibbonPanelSource();
-            LayerUpdatePanel.Title = "Layer Update";
-
-            RibbonPanel LayerUpdatePane = new RibbonPanel();
-            LayerUpdatePane.Source = LayerUpdatePanel;
+            RibbonPanelSource LayerUpdatePanel = new RibbonPanelSource()
+            {
+                Title = "Layer Update"
+            };
+            RibbonPanel LayerUpdatePane = new RibbonPanel()
+            {
+                Source = LayerUpdatePanel
+            };
             Tab.Panels.Add(LayerUpdatePane);
 
-            Autodesk.Windows.RibbonPanelSource DrawingMaintenancePanel = new RibbonPanelSource();
-            DrawingMaintenancePanel.Title = "Drawing maintenance";
-
-            RibbonPanel DrawingMaintenancePane = new RibbonPanel();
-            DrawingMaintenancePane.Source = DrawingMaintenancePanel;
+            RibbonPanelSource DrawingMaintenancePanel = new RibbonPanelSource()
+            {
+                Title = "Drawing maintenance"
+            };
+            RibbonPanel DrawingMaintenancePane = new RibbonPanel()
+            {
+                Source = DrawingMaintenancePanel
+            };
             Tab.Panels.Add(DrawingMaintenancePane);
 
-            Autodesk.Windows.RibbonPanelSource ViewPanel = new RibbonPanelSource();
-            ViewPanel.Title = "View";
-            
-            RibbonPanel ViewPane = new RibbonPanel();
-            ViewPane.Source = ViewPanel;
+            RibbonPanelSource ViewPanel = new RibbonPanelSource()
+            {
+                Title = "View"
+            };
+            RibbonPanel ViewPane = new RibbonPanel()
+            {
+                Source = ViewPanel
+            };
             Tab.Panels.Add(ViewPane);
 
-            Autodesk.Windows.RibbonPanelSource FunctionsPanel = new RibbonPanelSource();
-            FunctionsPanel.Title = "Functions";
-
-            RibbonPanel FunctionsPane = new RibbonPanel();
-            FunctionsPane.Source = FunctionsPanel;
+            RibbonPanelSource FunctionsPanel = new RibbonPanelSource()
+            {
+                Title = "Functions"
+            };
+            RibbonPanel FunctionsPane = new RibbonPanel()
+            {
+                Source = FunctionsPanel
+            };
             Tab.Panels.Add(FunctionsPane);
 
             //////////////////////////////////////////////////
@@ -86,99 +101,119 @@ namespace MyRibbonTab
 
             #region xRef Buttons
 
-            Autodesk.Windows.RibbonButton xrefButton1 = new RibbonButton();
-            xrefButton1.Text = "Add";
-            xrefButton1.ShowText = true;
-            xrefButton1.CommandHandler = new MyCmdHandler();
-
-            Autodesk.Windows.RibbonButton xrefButton2 = new RibbonButton();
-            xrefButton2.Text = "Unload";
-            xrefButton2.ShowText = true;
-            xrefButton2.CommandHandler = new MyCmdHandler();
-
-            Autodesk.Windows.RibbonButton xrefButton3 = new RibbonButton();
-            xrefButton3.Text = "Detach";
-            xrefButton3.ShowText = true;
-            xrefButton3.CommandHandler = new MyCmdHandler();
+            RibbonButton xrefButton1 = new RibbonButton()
+            {
+                Text = "Add",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
+            RibbonButton xrefButton2 = new RibbonButton()
+            {
+                Text = "Unload",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
+            RibbonButton xrefButton3 = new RibbonButton()
+            {
+                Text = "Detach",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
 
             #endregion
 
             #region Update Layers Buttons
 
-            Autodesk.Windows.RibbonButton UpdateLayersThisDrawingButton = new RibbonButton();
-            UpdateLayersThisDrawingButton.Text = "This drawing";
-            UpdateLayersThisDrawingButton.ShowText = true;
-            UpdateLayersThisDrawingButton.CommandHandler = new MyCmdHandler();
-
-            Autodesk.Windows.RibbonButton UpdateLayersMultipleDrawingsButton = new RibbonButton();
-            UpdateLayersMultipleDrawingsButton.Text = "Multiple drawings";
-            UpdateLayersMultipleDrawingsButton.ShowText = true;
-            UpdateLayersMultipleDrawingsButton.CommandHandler = new MyCmdHandler();
-
-            Autodesk.Windows.RibbonButton addLayerFromThisDrawingButton = new RibbonButton();
-            addLayerFromThisDrawingButton.Text = "Select layer this drawing";
-            addLayerFromThisDrawingButton.ShowText = true;
-            addLayerFromThisDrawingButton.CommandHandler = new MyCmdHandler();
-
-            Autodesk.Windows.RibbonButton addLayerFromXrefButton = new RibbonButton();
-            addLayerFromXrefButton.Text = "Select layer xref";
-            addLayerFromXrefButton.ShowText = true;
-            addLayerFromXrefButton.CommandHandler = new MyCmdHandler();
-
-            Autodesk.Windows.RibbonButton editLayerConfigButton = new RibbonButton();
-            editLayerConfigButton.Text = "Edit layer config";
-            editLayerConfigButton.ShowText = true;
-            editLayerConfigButton.CommandHandler = new MyCmdHandler();
+            RibbonButton UpdateLayersThisDrawingButton = new RibbonButton()
+            {
+                Text = "This drawing",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
+            RibbonButton UpdateLayersMultipleDrawingsButton = new RibbonButton()
+            {
+                Text = "Multiple drawings",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
+            RibbonButton addLayerFromThisDrawingButton = new RibbonButton()
+            {
+                Text = "Select layer this drawing",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
+            RibbonButton addLayerFromXrefButton = new RibbonButton()
+            {
+                Text = "Select layer xref",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
+            RibbonButton editLayerConfigButton = new RibbonButton()
+            {
+                Text = "Edit layer config",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
 
             #endregion
 
             #region Drawing management buttons
 
-            Autodesk.Windows.RibbonButton PurgeButton = new RibbonButton();
-            PurgeButton.Text = "Purge multiple drawings";
-            PurgeButton.ShowText = true;
-            PurgeButton.CommandHandler = new MyCmdHandler();
-
-            RibbonButton ChangeAttributeValueButton = new RibbonButton();
-            ChangeAttributeValueButton.Text = "Change attribute value";
-            ChangeAttributeValueButton.ShowText = true;
-            ChangeAttributeValueButton.CommandHandler = new MyCmdHandler();
-
-            RibbonButton GenerateAttributeListButton = new RibbonButton();
-            GenerateAttributeListButton.Text = "Generate Attribute List";
-            GenerateAttributeListButton.ShowText = true;
-            GenerateAttributeListButton.CommandHandler = new MyCmdHandler();
+            RibbonButton PurgeButton = new RibbonButton()
+            {
+                Text = "Purge multiple drawings",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
+            RibbonButton ChangeAttributeValueButton = new RibbonButton()
+            {
+                Text = "Change attribute value",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
+            RibbonButton GenerateAttributeListButton = new RibbonButton()
+            {
+                Text = "Generate Attribute List",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
 
             #endregion
 
             #region View Buttons
 
-            Autodesk.Windows.RibbonButton TopDownButton = new RibbonButton();
-            TopDownButton.Text = "Top Down";
-            TopDownButton.ShowText = true;
-            TopDownButton.CommandHandler = new MyCmdHandler();
+            RibbonButton TopDownButton = new RibbonButton()
+            {
+                Text = "Top Down",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
+            RibbonButton AdjustCableTraysButton = new RibbonButton()
+            {
+                Text = "Adjust Cable Trays",
+                ShowText = true,
+                CommandHandler = new MyCmdHandler()
+            };
 
-            Autodesk.Windows.RibbonButton AdjustCableTraysButton = new RibbonButton();
-            AdjustCableTraysButton.Text = "Adjust Cable Trays";
-            AdjustCableTraysButton.ShowText = true;
-            AdjustCableTraysButton.CommandHandler = new MyCmdHandler();
-
-            #endregion 
+            #endregion
 
             ////////////////////////
             // create split buttons
-            RibbonSplitButton XrefSplitButton = new RibbonSplitButton();
-            // Required to avoid upsetting AutoCAD when using cmd locator
-            XrefSplitButton.Text = "Xref functions";
-            XrefSplitButton.ShowText = true;
-
-            RibbonSplitButton LayerUpdateSplitButton = new RibbonSplitButton();
-            LayerUpdateSplitButton.Text = "Layer Update";
-            LayerUpdateSplitButton.ShowText = true;
-
-            RibbonLabel LayerUpdateLabel = new RibbonLabel();
-            LayerUpdateLabel.Text = "Update layers in:";
-
+            RibbonSplitButton XrefSplitButton = new RibbonSplitButton()
+            {
+                // Required to avoid upsetting AutoCAD when using cmd locator
+                Text = "Xref functions",
+                ShowText = true
+            };
+            RibbonSplitButton LayerUpdateSplitButton = new RibbonSplitButton()
+            {
+                Text = "Layer Update",
+                ShowText = true
+            };
+            RibbonLabel LayerUpdateLabel = new RibbonLabel()
+            {
+                Text = "Update layers in:"
+            };
             RibbonRowPanel DrawingMaintenanceRowPanel = new RibbonRowPanel();
             RibbonRowPanel LayerUpdateRowPanel = new RibbonRowPanel();
 
